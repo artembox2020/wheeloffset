@@ -1,5 +1,14 @@
 <?php
 
+function str_replace_params(string $string, $params = []) {
+    foreach ($params as $k => $v) {
+        $string = str_replace("[{$k}]", $v, $string);
+    }
+    
+    return $string;
+}
+
+
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
@@ -60,8 +69,10 @@ return array(
 			'rules'=>array(	
 				'admin' => 'admin/index/index',
 				'admin/login' => 'admin/index/login',
+                
+                'admin/productCategory/<categoryId:\d+>/models' => 'admin/ProductCategoryModel/index',
+                
 				'admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
-	
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

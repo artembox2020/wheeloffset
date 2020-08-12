@@ -249,9 +249,9 @@ class AutoModelYearPhoto extends CActiveRecord
 		$data = Yii::app()->cache->get($key);
 		
 		if ($data == false && !is_array($data)) {	
-			$data = array();
+			$data = [];
 			$criteria=new CDbCriteria;
-			$criteria->compare('year_id',$model_year_id);			
+			$criteria->compare('year_id', $model_year_id);			
 			$criteria->order = 'rank';			
 			$items = self::model()->findAll($criteria);
 			foreach ($items as $item) {

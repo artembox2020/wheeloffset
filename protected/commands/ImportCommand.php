@@ -2,7 +2,6 @@
 
 class ImportCommand extends CConsoleCommand
 {
-
     public static $state = [];
     private $cliColor;
 
@@ -15,30 +14,16 @@ class ImportCommand extends CConsoleCommand
         return parent::init();
     }
 
-    public function actionSeoText()
-    {
-        $file = Yii::getPathOfAlias('webroot') . '/../bulb_model_year.txt';
-        $items = file($file);
-        foreach ($items as $text) {
-            $model = new SeoTextSource;
-            $model->text = $text;
-            $model->page = 'bulb_model_year_header';
-            $model->save();
-
-            echo $model->id . "\n";
-        }
-    }
-
     public function actionAgree()
     {
         $action = 'https://www.autoblog.com/consent';
-        
+
         $post = [
-            'consentCollectionStep' => 'EU_SINGLEPAGE',                                     
-            'previousStep' => '',                                            
-            'csrfToken' => 'B7koW9U6Ts8VBc7KEj9gPDkga3H3544z',                                        
-            'jurisdiction' => '',                                      
-            'locale' => 'de-DE',                                        
+            'consentCollectionStep' => 'EU_SINGLEPAGE',
+            'previousStep' => '',
+            'csrfToken' => 'B7koW9U6Ts8VBc7KEj9gPDkga3H3544z',
+            'jurisdiction' => '',
+            'locale' => 'de-DE',
             'doneUrl' => 'https://guce.autoblog.com/copyConsent?sessionId=3_cc-session_b5f66a45-5555-48b9-aaf4-d43b2b2edf8e&amp;inline=false&amp;lang=de-DE',
             'tosId' => 'eu',
             'sessionId' => '3_cc-session_b5f66a45-5555-48b9-aaf4-d43b2b2edf8e',
@@ -51,97 +36,11 @@ class ImportCommand extends CConsoleCommand
             'userType' => 'NON_REG',
             'country' => 'DE',
             'ybarNamespace' => 'AUTOBLOG',
-            'agree' => 'agree',            
+            'agree' => 'agree',
         ];
-        
+
         $data = CUrlHelper::getPage($action, '', $post);
         var_dump($data);
-    }
-
-    public function actionBulb()
-    {
-        $file = 'log.txt';
-        //@unlink($file);
-
-        $end = false;
-        $limit = 1000;
-        $page = 0;
-        $countNotFounded = 0;
-        while (!$end) {
-            $offset = $page * $limit;
-            $sql = "SELECT * FROM donor_product_bulb LIMIT {$offset}, {$limit}";
-            $rows = Yii::app()->db->createCommand($sql)->queryAll();
-
-            foreach ($rows as $row) {
-
-                $bulb = ProductBulb::model()->findByAttributes(['part' => $row['part']]);
-                if (empty($bulb)) {
-                    $bulb = new ProductBulb;
-                    $bulb->app = $row['app'];
-                    $bulb->part = $row['part'];
-                    $bulb->save();
-                }
-
-                echo $bulb->id . "\n";
-
-                if (!array_key_exists($row['make'], self::$state)) {
-                    $make = AutoMake::model()->findByAttributes(['title' => $row['make']]);
-                    if (empty($make)) {
-                        file_put_contents($file, 'make: ' . $row['make'] . "\n", FILE_APPEND);
-                        self::$state[$row['make']] = null;
-                    } else {
-                        self::$state[$row['make']]['id'] = $make->id;
-                    }
-                }
-
-                if (empty(self::$state[$row['make']])) {
-                    continue;
-                }
-
-                if (empty(self::$state[$row['make']]['items']) ||
-                    !array_key_exists($row['model'], self::$state[$row['make']]['items'])
-                ) {
-                    $model = AutoModel::model()->findByAttributes([
-                        'make_id' => self::$state[$row['make']]['id'],
-                        'title' => $row['model'],
-                    ]);
-
-                    if (empty($model)) {
-                        file_put_contents($file, 'make: ' . $row['make'] . ' - model: ' . $row['model'] . "\n", FILE_APPEND);
-                        self::$state[$row['make']]['items'][$row['model']] = null;
-                    } else {
-                        self::$state[$row['make']]['items'][$row['model']] = $model->id;
-                    }
-                }
-
-                if (empty(self::$state[$row['make']]['items'][$row['model']])) {
-                    continue;
-                }
-
-                $criteria = new CDbCriteria;
-                $criteria->with = ['Model', 'Model.Make'];
-                $criteria->compare('t.year', $row['year']);
-                $criteria->compare('LOWER(Model.title)', $row['model']);
-                $criteria->compare('LOWER(Make.title)', $row['make']);
-                $modelYear = AutoModelYear::model()->find($criteria);
-
-                if (!empty($modelYear)) {
-                    $res = (int) Yii::app()->db->createCommand("SELECT COUNT(*) FROM auto_model_year_bulb WHERE model_year_id = {$modelYear->id} AND bulb_id = {$bulb->id}")->queryScalar();
-                    if (!$res) {
-                        $sql = "insert into auto_model_year_bulb (model_year_id, bulb_id) values ({$modelYear->id}, {$bulb->id})";
-                        Yii::app()->db->createCommand($sql)->execute();
-                    }
-                } else {
-                    $countNotFounded++;
-                }
-            }
-
-            if (empty($rows)) {
-                $end = true;
-            }
-            $page++;
-        }
-        echo $countNotFounded;
     }
 
     public function actionFlush()
@@ -279,7 +178,7 @@ class ImportCommand extends CConsoleCommand
 
         //DELETE
         //AutoModelYear::model()->deleteAllByAttributes(['year'=>$year]);
-        
+
         $i = 0;
         if (isset($matchesPager[1][0]) && is_numeric($matchesPager[1][0])) {
             $couuntPage = min($matchesPager[1][0], 50);
@@ -298,7 +197,7 @@ class ImportCommand extends CConsoleCommand
 
                 preg_match_all('/<a class="link" href="\/buy\/' . $year . '-(.*?)-(.*?)__(.*?)">' . $year . '(.*?)<\/a>/', $content, $matches);
                 preg_match_all('/<svg width="150" height="84" data-original="(.*?)images\%2F(.*?)&thumbnail=150%2C84&quality=70" class="lazy img-responsive" alt="' . $year . '(.*?)">/', $content, $matchSvg);
-				
+
                 foreach ($matches[1] as $key => $makeTitle) {
                     $makeTitle = $matches[1][$key];
                     $modelTitle = trim(str_replace($makeTitle, '', $matches[4][$key]));
@@ -375,30 +274,33 @@ class ImportCommand extends CConsoleCommand
 
     public function actionCatalog()
     {
-        //$this->actionMake();
-        //$this->actionModel();
-        //$parsedModelYearIds = $this->actionModelYear(date('Y'));
-        //$parsedModelYearIds = array_merge($parsedModelYearIds, $this->actionModelYear(date('Y')+1));
-		
-		//$parsedModelYearIds = range(9986, 10168);
-		
+        ///$this->actionCompletionData(range(41469, 45082));
+        //die();
+        $this->actionMake();
+        $this->actionModel();
+        $parsedModelYearIds = $this->actionModelYear(date('Y'));
+        $parsedModelYearIds = array_merge($parsedModelYearIds, $this->actionModelYear(date('Y') + 1));
+
+        //TODO
+        //$parsedModelYearIds = range(10631, 11049);
+
         //if (!empty($parsedModelYearIds)) {
-        if (1) {
+
             //$this->actionModelYearPhoto($parsedModelYearIds);
             //$completionIds = $this->actionCompletion($parsedModelYearIds);
-            $completionIds = range(44482, 45082);
-            
+            $completionIds = range(45083, 46183);
+
             if (!empty($completionIds)) {
                 $this->actionCompletionDetails($completionIds);
                 $this->actionSpecs();
                 $this->actionCompletionData($completionIds);
             }
-        }
+        //}
 
-        //$this->actionNotModelYear();
-        //$this->actionEmptyCompletion();
-        ////$this->actionNotCompletionTitle();
-        //$this->actionMoveSpecs();	
+        $this->actionNotModelYear();
+        $this->actionEmptyCompletion();
+        $this->actionNotCompletionTitle();
+        $this->actionMoveSpecs();
 
         CUrlHelper::getPage('http://autotk.com/site/flush', '', '');
     }
@@ -419,11 +321,11 @@ class ImportCommand extends CConsoleCommand
             $expl = explode('/', $row['specs_epa_mileage_estimates']);
             if (count($expl) == 2) {
 
-                $city = (int) trim($expl[0]);
-                $highway = (int) trim($expl[1]);
+                $city = (int)trim($expl[0]);
+                $highway = (int)trim($expl[1]);
 
                 $sql .= "UPDATE auto_completion
-						specs_fuel_economy__highwaySET specs_fuel_economy__city={$city},  = {$highway}
+						 SET specs_fuel_economy__city={$city}, specs_fuel_economy__highway = {$highway}
 						WHERE id = " . $row['id'] . "; \n";
             }
         }
@@ -498,7 +400,7 @@ class ImportCommand extends CConsoleCommand
     {
         $criteria = new CDbCriteria();
         $criteria->addInCondition('id', $ids);
-        $autoModels = (array) AutoModelYear::model()->findAll($criteria);
+        $autoModels = (array)AutoModelYear::model()->findAll($criteria);
         foreach ($autoModels as $keyYear => $autoModelYear) {
             $url = "https://www.autoblog.com/buy/{$autoModelYear->year}-" . str_replace(array(' '), array('+'), $autoModelYear->Model->Make->title) . "-" . str_replace(array(' '), array('+'), $autoModelYear->Model->title) . "/photos/";
 
@@ -618,6 +520,7 @@ class ImportCommand extends CConsoleCommand
 
         return $completion;
     }
+
     /*
      * Парсинг кодов комплектации
      */
@@ -660,6 +563,7 @@ class ImportCommand extends CConsoleCommand
 
         return $completionIds;
     }
+
     /*
      * Парсинг страницы комплектации
      */
@@ -675,11 +579,11 @@ class ImportCommand extends CConsoleCommand
         foreach ($completions as $key => $completion) {
             //AutoCompletionSpecsTemp::model()->deleteAllByAttributes(array('completion_id'=>$completion->id));
             $url = "https://www.autoblog.com/buy/" . $completion->url . '/';
-            
+
             if (stripos($completion->url, '__') <= 0) {
                 $content = CUrlHelper::getPage($url . 'specs/', '', '');
                 preg_match_all('/<a href="(.*?)"><h3 data-toggle="tooltip" itemprop="vehicleConfiguration" title="(.*?)" data-car="(.*?)">(.*?)<\/h3><\/a>/', $content, $matchUrl);
-                
+
                 if (!isset($matchUrl[0][1])) {
                     echo "NOT: " . $completion->url . "\n";
                     continue;
@@ -689,16 +593,16 @@ class ImportCommand extends CConsoleCommand
                 $u = $expl[2];
                 $url = "https://www.autoblog.com/buy/" . $u . '/';
             }
-            
+
             echo "$url \n";
-            
+
             $content = '';
             $content .= CUrlHelper::getPage($url . 'specs/', '', '');
             $content .= CUrlHelper::getPage($url . 'equipment/', '', '');
             $content .= CUrlHelper::getPage($url . 'pricing/', '', '');
-            
+
             preg_match_all('/<thead><tr><td>(.*?)<\/td><\/tr><\/thead>/', $content, $matchTable);
-            
+
             $data = array();
             if ($completion->specs_msrp == 0) {
                 preg_match('/<div class="price"><span>(.*?)<\/span> <em>MSRP \/ Window Sticker Price<\/em><\/div>/', $content, $matchPrice);
@@ -707,7 +611,7 @@ class ImportCommand extends CConsoleCommand
                     $data['specs_msrp'] = $completion->specs_msrp;
                 }
             }
-            
+
             if (empty($completion->title)) {
                 preg_match('/<h1 class="pull-left">(.*?)<br><span class="trim-style">(.*?)<span id="pricing-page-title">Specs<\/span><\/span><\/h1>/', $content, $matchTitle);
                 if (!empty($matchTitle[1])) {
@@ -732,7 +636,7 @@ class ImportCommand extends CConsoleCommand
             //if (isset($matchGroup[1][1])) {
             if (true) {
                 preg_match_all('/<tr><td class="type">(.*?)<\/td><td class="spec">(.*?)<\/td><\/tr>/', $content, $matchSpecs);
-                
+
                 foreach ($matchSpecs[1] as $k => $specTitle) {
                     $specsTitle = trim(strip_tags($specTitle));
                     $specs = $this->getSpecs(array('title' => $specsTitle));
@@ -745,7 +649,7 @@ class ImportCommand extends CConsoleCommand
 
                     if (in_array($specs->id, array(157, 158))) {
                         $tempValue = str_replace(',', '', $tempValue);
-                        $tempValue = (float) $tempValue;
+                        $tempValue = (float)$tempValue;
                         echo "$specs->title:  {$tempValue} \n";
                     }
 
@@ -773,7 +677,7 @@ class ImportCommand extends CConsoleCommand
             //print_r($temp);
 
             echo "parses specs: completion: {$completion->id} \n";
-            
+
             /*
             preg_match_all('/<div class="rsContent col-tn-4"><div><a href="\/buy\/(.*?)-(.*?)-(.*?)\/"><img alt="(.*?)" class="rsImg" src="(.*?)" \/><h4>(.*?)<\/h4><\/a><\/div><\/div>/', $content, $matchCompetitorsContent);
             
@@ -802,6 +706,7 @@ class ImportCommand extends CConsoleCommand
             */
         }
     }
+
     /*
      * Формируем тип полей характеристик
      * Добавляем сформирование поля в таблицу комплектаций
@@ -946,6 +851,7 @@ class ImportCommand extends CConsoleCommand
         $t = time() - $time;
         echo $t;
     }
+
     /*
      * Заполняем поля таблицы комплектации значениямы
      */
@@ -979,10 +885,10 @@ class ImportCommand extends CConsoleCommand
 
                     if ($specData['type'] == AutoSpecs::TYPE_INT) {
                         $value = str_replace(',', '.', $value);
-                        $value = (int) str_replace(array('$', ',', '"' . "'", 'lbs.', 'mph', 'cu.ft.', 'gal.', 'doors', 'passengers', 'mpg', 'seconds', '&#034;'), '', $value);
+                        $value = (int)str_replace(array('$', ',', '"' . "'", 'lbs.', 'mph', 'cu.ft.', 'gal.', 'doors', 'passengers', 'mpg', 'seconds', '&#034;'), '', $value);
                     } else if ($specData['type'] == AutoSpecs::TYPE_FLOAT) {
                         $value = str_replace(',', '.', $value);
-                        $value = (float) str_replace(array('$', ',', '"' . "'", 'lbs.', 'mph', 'cu.ft.', 'gal.', 'doors', 'passengers', 'mpg', 'seconds', '&#034;'), '', $value);
+                        $value = (float)str_replace(array('$', ',', '"' . "'", 'lbs.', 'mph', 'cu.ft.', 'gal.', 'doors', 'passengers', 'mpg', 'seconds', '&#034;'), '', $value);
                     } else if ($specData['type'] == AutoSpecs::TYPE_SELECT) {
                         $value = AutoSpecsOption::getIdByValueAndSpecsId($specData['id'], $value);
                     }
@@ -996,8 +902,8 @@ class ImportCommand extends CConsoleCommand
             $completion->validateSpecs = false;
             $completion->validateTitle = false;
             if (!$completion->save()) {
-                //print_r($completion->errors);
-                //die();
+                print_r($completion->errors);
+                die();
             }
 
             echo 'Completion Data ' . $completion->id . "\n";

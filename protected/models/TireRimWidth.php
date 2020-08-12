@@ -113,4 +113,24 @@ class TireRimWidth extends CActiveRecord
 		return $data;
 	}
 		
+	public static function getAll()
+	{
+		$key = Tags::TAG_TIRE_RIM_WIDTH . '_getAll__';
+		$data = Yii::app()->cache->get($key);
+		if (empty($data)) {
+            $criteria=new CDbCriteria;
+            $criteria->order = '`value` ASC';
+            
+			$data = self::model()->findAll($criteria);
+			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_TIRE_RIM_WIDTH));
+		}
+		
+		return $data;
+	}	
+	
+	public static function getList()
+	{
+		return CHtml::listData(self::getAll(), 'id', 'value');
+	}	
+    
 }

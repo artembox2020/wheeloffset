@@ -121,4 +121,25 @@ class AjaxController extends Controller
 		echo json_encode($response);
 	}
 		
+	public function actionGetModelsByMakeId()
+	{
+		$makeId = Yii::app()->request->getParam('id');
+		$data = AutoModel::getModelsMake($makeId);
+		$response['items'] = $data;
+		echo json_encode($response);
+	}
+    
+	public function actionGetModelsByMakeIdAndProductCategoryId()
+	{
+		$makeId = Yii::app()->request->getParam('id');
+		$categoryId = Yii::app()->request->getParam('category_id');
+		
+        $data = array_filter(AutoModel::getItemsByProductCategoryId($categoryId), function ($item) use ($makeId) {
+            return $item['make_id'] == $makeId;
+        });
+        
+		$response['items'] = $data;
+		echo json_encode($response);
+	}
+    
 }

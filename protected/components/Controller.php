@@ -22,4 +22,6 @@ class Controller extends CController
 	public $breadcrumbs=array();
 	public $meta_keywords;
 	public $meta_description;
+    public $canonical;
+    
 }

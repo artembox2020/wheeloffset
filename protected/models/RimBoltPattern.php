@@ -87,13 +87,13 @@ class RimBoltPattern extends CActiveRecord
 		));
 	}
 	
-	public static function getAll() 
+	public static function getAll($attr='value') 
 	{
-		$key = Tags::TAG_RIM_BOLT_PATTERN . '_getAll_';
+		$key = Tags::TAG_RIM_BOLT_PATTERN . '_getAll_' . $attr;
 		$data = Yii::app()->cache->get($key);
 		
 		if ($data === false) {
-			$data = CHtml::listData(self::model()->findAll(array('order'=>'value')), 'id', 'value');
+			$data = CHtml::listData(self::model()->findAll(array('order'=>'value')), 'id', $attr);
 			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_RIM_BOLT_PATTERN));
 		}
 		

@@ -84,7 +84,7 @@ class ModelController extends BackendController
         ));
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id, $category_id=null) {
 		Access::is('model.update', 403);
 	
         $model = $this->loadModel($id);
@@ -99,9 +99,31 @@ class ModelController extends BackendController
 				$this->afterSaveRedirect($model);
 			}
         }
+        
+        $ebayModel = $this->loadEbayAutoModel($id);
+        
+        $modelProducts = new Product();
+        $modelProducts->unsetAttributes();
 
+        if (isset($_GET['Product'])) {
+            $model->attributes = $_GET['Product'];
+        }
+        
+        $category = null;
+        if ($category_id !== null) {
+            $category = $this->loadEbayCategory($category_id);
+            $modelProducts->category_id = $category->id;
+        }
+        if ($ebayModel) {
+            $modelProducts->model_id = $ebayModel->id;
+        }
+        
         $this->render('update', array(
+            'ebayModel' => $ebayModel,
             'model' => $model,
+            'category' => $category,
+            'modelProducts' => $modelProducts,
+            'pageSize' => Yii::app()->request->getParam('pageSize', Yii::app()->params->defaultPerPage),
         ));
     }
 
@@ -180,7 +202,37 @@ class ModelController extends BackendController
 			throw new CHttpException(404, 'Page not found');
     }
 
-	public function actionGetByMake() {
+    /**
+     * @param $id integer
+     * @return Page
+     */
+    private function loadEbayCategory($id)
+	{
+		$model = ProductEbayCategory::model()->findByPk($id);
+        
+		if (!empty($model))
+			return $model;
+		else 
+			throw new CHttpException(404, 'Page not found');
+    }
+
+    /**
+     * @param $id integer
+     * @return Page
+     */
+    private function loadEbayAutoModel($id)
+	{
+        $criteria = new CDbCriteria;
+        $criteria->compare('atk_id', $id);
+		$model = EbayAutoModel::model()->find($criteria);
+        
+		if (!empty($model))
+			return $model;
+		else 
+			return null;
+    }
+
+    public function actionGetByMake() {
 		$id = (int)Yii::app()->getRequest()->getParam('id', 0);
 		
 		$items = AutoModel::getAllByMake($id);

@@ -68,6 +68,8 @@ class SiteController extends Controller
 			'#' => $model['title'],
 		);
 			
+        
+        
 		$lastModelYear = AutoModel::getLastYear($model['id']);
 		$modelByYears = AutoModel::getYears($model['id']);
 		$models = AutoMake::getModels($make['id']);
@@ -158,7 +160,8 @@ class SiteController extends Controller
 		$this->meta_keywords = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $modelYear['year']), SiteConfig::getInstance()->getValue('seo_model_year_photos_meta_keywords'));
 		$this->meta_description = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $modelYear['year']), SiteConfig::getInstance()->getValue('seo_model_year_photos_meta_description'));		
 			
-
+        $this->canonical = 'https://autotk.com/' . $make['alias'] . '/' . $model['alias'] . '/' . $modelYear['year'] . '/';
+        
 		$this->breadcrumbs = array(
 			'/' => 'Home',
 			$make['url'] => $make['title'],
@@ -235,7 +238,7 @@ class SiteController extends Controller
 	
 	public function actionFlush()
 	{
-		Yii::app()->cache->flush();
+    	Yii::app()->cache->flush();
 	}	
 	
 	public function actionConfigFlush()

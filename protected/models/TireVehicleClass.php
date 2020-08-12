@@ -93,7 +93,7 @@ class TireVehicleClass extends CActiveRecord
 		$key = Tags::TAG_TIRE_VEHICLE_CLASS . '_getAll_';
 		$data = Yii::app()->cache->get($key);
 		if (empty($data)) {
-			$data = (array)self::model()->findAll(array('order'=>'rank'));
+			$data = (array)self::model()->findAll(array('order'=>'`rank`'));
 			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_TIRE_VEHICLE_CLASS));
 		}
 		

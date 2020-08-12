@@ -91,7 +91,7 @@ class TireAspectRatio extends CActiveRecord
 		$key = Tags::TAG_TIRE_ASPECT_RATIO . '_getAll__';
 		$data = Yii::app()->cache->get($key);
 		if (empty($data)) {
-			$data = (array)self::model()->findAll(array('order'=>'rank, value'));
+			$data = (array)self::model()->findAll(array('order'=>'`rank`, `value`'));
 			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_TIRE_ASPECT_RATIO));
 		}
 		

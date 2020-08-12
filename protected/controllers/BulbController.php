@@ -41,17 +41,13 @@ class BulbController extends Controller
 		
 		$dataModels = AutoMake::getModels($make['id']);
 		
-		$issetBulbs = ProductBulb::getIsssetByMake($make['id']);
-		
 		$this->render('make', array(
 			'header_text' => $header_text,
 			'footer_text' => $footer_text,
 			'make' => $make,
 			'dataModels' => $dataModels,
-			'issetBulbs' => $issetBulbs,
 		));
 	}
-	
 	
 	public function actionModel($makeAlias, $modelAlias)
 	{
@@ -66,8 +62,7 @@ class BulbController extends Controller
 			 throw new CHttpException(404,'Page cannot be found.');
 		}
 		
-		$issetBulbs = ProductBulb::getIsssetByMake($make['id']);
-		if (empty($issetBulbs[$model['id']])) {
+		if (!$model['is_bulb']) {
 			 throw new CHttpException(404,'Page cannot be found.');
 		}
 
@@ -87,12 +82,21 @@ class BulbController extends Controller
 		$modelByYears = AutoModel::getYears($model['id']);
 		
 		$lastModelYear = AutoModel::getLastYear($model['id']);
-
+        
+        
+        $yIds = [];
+        foreach ($modelByYears as $modelByYear) {
+            $yIds[] = $modelByYear['id'];
+        }
+        
+        $bulbItemsByYear = ProductBulbItem::getForwardItemsByYears($yIds);
+        
 		$this->render('model', array(
-			'lastModelYear' => $lastModelYear,
 			'make' => $make,
 			'model' => $model,
 			'modelByYears' => $modelByYears,
+			'lastModelYear' => $lastModelYear,
+			'bulbItemsByYear' => $bulbItemsByYear,
 			'header_text' => $header_text,
 			'footer_text' => $footer_text,
 			'lastYear' => AutoModel::getLastYear($model['id']),
@@ -107,7 +111,7 @@ class BulbController extends Controller
 		}	
 	
 		$model = AutoModel::getModelByMakeAndAlias($make['id'], $modelAlias);
-		if (empty($model)) {
+		if (empty($model) || !$model['is_bulb']) {
 			throw new CHttpException(404,'Page cannot be found.');
 		}	
 	
@@ -117,10 +121,7 @@ class BulbController extends Controller
 		}		
 	
 		$bulbs = ProductBulb::getItemsByYear($modelYear['id']);
-		if (empty($bulbs)) {
-			throw new CHttpException(404,'Page cannot be found.');
-		}		
-	
+		
         $header_text_static = SeoText::getText('bulb_model_year_header', $modelYear['id'], [
             '[make]' => $make['title'],
             '[model]' => $model['title'],
@@ -145,7 +146,15 @@ class BulbController extends Controller
 		
 		$models = AutoModelYear::getModelsByMakeAndYear($make['id'], $modelYear['year']);
 		
-		$this->render('model_year', array(
+        $bIds = [];
+        foreach ($bulbs as $bulb) {
+            $bIds[] = $bulb['bulb_id'];
+        }
+        $bulbItems = ProductBulbItem::getItemsByType($bIds);
+        
+        //d($bulbItems);
+        
+        $this->render('model_year', array(
 			'make' => $make,
 			'bulbs' => $bulbs,
 			'model' => $model,
@@ -153,6 +162,7 @@ class BulbController extends Controller
 			'modelYears' => AutoModel::getYears($model['id']),
 			'header_text' => $header_text,
 			'footer_text' => $footer_text,			
+			'bulbItems' => $bulbItems,			
 		));	
 	}	
 	
@@ -162,6 +172,9 @@ class BulbController extends Controller
 		if (empty($bulb)) {
 			throw new CHttpException(404,'Page cannot be found.');
 		}		
+        
+        //TODO
+        $bulb['app'] = '';
 	
 		$this->pageTitle = str_replace(['[part]', '[app]'], [$bulb['part'], $bulb['app']], SiteConfig::getInstance()->getValue('product_bulb_type_meta_title'));
 		$this->meta_keywords = str_replace(['[part]', '[app]'], [$bulb['part'], $bulb['app']], SiteConfig::getInstance()->getValue('product_bulb_type_meta_keywords'));
@@ -185,4 +198,54 @@ class BulbController extends Controller
 		));	
 	}	
 	
+	public function actionApiModel($makeAlias, $modelAlias)
+	{
+		$make = AutoMake::getMakeByAlias($makeAlias);
+		if (empty($make)) {
+			throw new CHttpException(404,'Page cannot be found.');
+		}	
+	
+		$model = AutoModel::getModelByMakeAndAlias($make['id'], $modelAlias);
+		if (empty($model)) {
+			throw new CHttpException(404,'Page cannot be found.');
+		}	
+        
+        $data = [];
+        
+        foreach (AutoModel::getYears($model['id']) as $yearItem) {
+            $items = ProductBulb::getItemsByYear($yearItem['id']);
+            if (!empty($items)) {
+                //$data[$yearItem['year']]['photo'] = 'https://autotk.com' . $yearItem['photo'];
+                //$data[$yearItem['year']]['bulbs'] = $items;
+                $data[$yearItem['year']] = $items;
+            }
+        }
+        
+		echo json_encode($data);	
+	}    
+    
+	public function actionApiMake($makeAlias)
+	{
+		$make = AutoMake::getMakeByAlias($makeAlias);
+		if (empty($make)) {
+			throw new CHttpException(404,'Page cannot be found.');
+		}	
+	
+        $sql = "SELECT
+                    auto_model.title AS title,
+                    auto_model.alias AS alias,
+                    (SELECT 
+                        COUNT(*) 
+                        FROM auto_model_year_bulb AS myb
+                        LEFT JOIN auto_model_year AS y ON myb.model_year_id = y.id
+                        WHERE y.model_id = auto_model.id
+                    ) AS count_bulbs
+                FROM auto_model
+                WHERE  auto_model.make_id = {$make['id']}
+                HAVING count_bulbs > 0";
+                
+        $data = Yii::app()->db->createCommand($sql)->queryAll();   
+        
+		echo json_encode($data);	
+	}    
 }

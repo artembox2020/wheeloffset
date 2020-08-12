@@ -119,6 +119,9 @@ class AutoCompletion extends CActiveRecord
 			$this->image_path = '';
 		}	
 	
+        $this->specs_horsepower_rpm = str_replace(',', '', $this->specs_horsepower_rpm);
+        $this->specs_torque_rpm = str_replace(',', '', $this->specs_torque_rpm);
+        
 		$this->update_time = time();
 		return parent::beforeSave();
 	}
@@ -151,9 +154,8 @@ class AutoCompletion extends CActiveRecord
 			'is_deleted' => Yii::t('admin', 'Deleted'),	
 			'is_delete_photo' => Yii::t('admin', 'Delete Photo'),	
 			'file' => 'File Name',			
-						
 		);
-		
+        
 		$specs = AutoSpecs::getAll();
 		foreach ($specs as $spec) {
 			$labels[self::PREFIX_SPECS.$spec['alias']] = $spec['title'];
@@ -1046,6 +1048,18 @@ class AutoCompletion extends CActiveRecord
 		return $data;
 	}	
 	
+    public static function getPayloadCapacity($data) 
+    {
+        $value = null;
+        
+        if (!empty($data['specs_payload'])) {
+            $value = (int) $data['specs_payload'];
+        } elseif (!empty($data['specs_gross_vehicle_weight_rating_gvwr_']) && !empty($data['specs_curb_weight'])) {
+            $value = (int) ($data['specs_gross_vehicle_weight_rating_gvwr_'] - $data['specs_curb_weight']);
+        }
+        
+        return $value;
+    }
 }
 
 	

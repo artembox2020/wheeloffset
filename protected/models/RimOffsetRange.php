@@ -149,6 +149,12 @@ class RimOffsetRange extends CActiveRecord
 		}
 		
 		return $data;		
-	}			
+	}	
+    
+	public static function getList()
+	{
+		return CHtml::listData(self::getAll(), 'id', 'value');
+	}	
+    
 		
 }

@@ -4,6 +4,8 @@ class HorsepowerController extends Controller
 {
 	public function actionIndex()
 	{
+        header("Location: /0-60-times.html", false, 301);
+        
 		$this->pageTitle = SiteConfig::getInstance()->getValue('seo_horsepower_title');
 		$this->meta_keywords = SiteConfig::getInstance()->getValue('seo_horsepower_meta_keywords');
 		$this->meta_description = SiteConfig::getInstance()->getValue('seo_horsepower_meta_description');		
@@ -20,7 +22,9 @@ class HorsepowerController extends Controller
 	
 	public function actionMake($alias)
 	{
-		$make = AutoMake::getMakeByAlias($alias);
+        header("Location: /0-60-times/$alias/", false, 301);
+
+        $make = AutoMake::getMakeByAlias($alias);
 		
 		if (empty($make)) {
 			 throw new CHttpException(404,'Page cannot be found.');
@@ -49,7 +53,9 @@ class HorsepowerController extends Controller
 	
 	public function actionModel($makeAlias, $modelAlias)
 	{
-		$make = AutoMake::getMakeByAlias($makeAlias);
+        header("Location: /0-60-times/$makeAlias/$modelAlias/", false, 301);
+
+        $make = AutoMake::getMakeByAlias($makeAlias);
 		if (empty($make)) {
 			 throw new CHttpException(404,'Page cannot be found.');
 		}	
@@ -88,6 +94,8 @@ class HorsepowerController extends Controller
 	
 	public function actionModelYear($makeAlias, $modelAlias, $year)
 	{
+        header("Location: /0-60-times/$makeAlias/$modelAlias/", false, 301);
+        
 		$make = AutoMake::getMakeByAlias($makeAlias);
 		if (empty($make)) {
 			throw new CHttpException(404,'Page cannot be found.');
@@ -133,57 +141,5 @@ class HorsepowerController extends Controller
 			'header_text_block' => $header_text_block,
 			
 		));	
-	}	
-	
-	public function actionHp($hp,$page=1)
-	{	
-		$this->pageTitle = str_replace(array('[hp]'), array($hp), SiteConfig::getInstance()->getValue('seo_horsepower_hp_title'));
-		$this->meta_keywords = str_replace(array('[hp]'), array($hp), SiteConfig::getInstance()->getValue('seo_horsepower_hp_meta_keywords'));
-		$this->meta_description = str_replace(array('[hp]'), array($hp), SiteConfig::getInstance()->getValue('seo_horsepower_hp_meta_description'));		
-			
-		if ($page > 1) {
-			$this->pageTitle .= " page {$page}";
-		}	
-			
-		$this->breadcrumbs = array(
-			'/' => 'Home',
-			'/horsepower.html' => 'Horsepower',
-			'#' => $hp,
-		);	
-		
-		$count = AutoModelYear::getCountItemsByHp($hp);
-		
-		$limit = 50;
-		$offset = $limit*($page-1);
-		$modelYears = AutoModelYear::getItemsByHp($hp, $limit, $offset);
-		
-		if (empty($modelYears)) {
-			throw new CHttpException(404,'Page cannot be found.');
-		}		
-		
-		$countPage = (int)($count/$limit);
-		if (($count % $limit) != 0) {
-			$countPage++;
-		}
-		
-		$hps = AutoCompletion::getHpList();
-		$currentHps = array();
-		$index = array_search($hp, $hps);
-		if (isset($hps[$index-50])) $currentHps[] =  $hps[$index-50];
-		if (isset($hps[$index-10])) $currentHps[] =  $hps[$index-10];
-		if (isset($hps[$index-1])) $currentHps[] =  $hps[$index-1];
-			$currentHps[] =  $hp;
-		if (isset($hps[$index+1])) $currentHps[] =  $hps[$index+1];
-		if (isset($hps[$index+10])) $currentHps[] =  $hps[$index+10];
-		if (isset($hps[$index+50])) $currentHps[] =  $hps[$index+50];	
-		
-		$this->render('hp', array(
-			'hp' => $hp,
-			'page' => $page,
-			'modelYears' => $modelYears,
-			'countPage' => $countPage,
-			'currentHps' => $currentHps,
-		));	
-	}	
-	
+	}		
 }

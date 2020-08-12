@@ -21,7 +21,8 @@ class FilterHelper
 		//fetch width
 		preg_match('/wheels-(\d*)x(\d*).(\d*)/', $filter, $matches);
 		if (count($matches) == 4) {
-			$filterData['width'] = $matches[2] .'.'.$matches[3];
+            $filterData['hasRedirect'] = true;
+            $filterData['width'] = $matches[2] .'.'.$matches[3];
 		} else {
 			preg_match('/wheels-(\d*).(\d*)-width/', $filter, $matches);
 			if (count($matches) == 3) {

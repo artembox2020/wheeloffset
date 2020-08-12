@@ -356,7 +356,7 @@ class Project extends CActiveRecord
 			
 			$criteria = new CDbCriteria;
 			$criteria->compare('project_id', $id);
-			$criteria->order = 'rank';
+			$criteria->order = '`rank`';
 			$photo = ProjectPhoto::model()->find($criteria);
 			
 			if (!empty($photo)) {
@@ -787,7 +787,7 @@ class Project extends CActiveRecord
 	
 	public static function getCustomRimSizes($model_year_ids)
 	{
-		$key	  = Tags::TAG_PROJECT . '___getCustomRimSizes__' . implode('_', $model_year_ids);
+		$key	  = Tags::TAG_PROJECT . '__getCustomRimSizes__' . implode('_', $model_year_ids);
 		$data	  = Yii::app()->cache->get($key);
 		
 		if ($data === false) {
@@ -829,7 +829,8 @@ class Project extends CActiveRecord
 					LEFT JOIN rim_width AS rear_rw ON p.rear_rim_width_id = rear_rw.id
 					WHERE rd.value IS NOT NULL AND rw.value IS NOT NULL AND p.model_year_id IN(".implode(',', $model_year_ids).") AND p.is_active=1
 					GROUP BY rim_diameter, rim_width, p.is_staggered_wheels, rear_rim_diameter, rear_rim_width
-					ORDER BY rd.value, CAST(rw.value AS DECIMAL(5,2))";
+					ORDER BY c DESC, rd.value, CAST(rw.value AS DECIMAL(5,2))
+                    LIMIT 10";
 			
 			$data = Yii::app()->db->createCommand($sql)->queryAll();				
 			

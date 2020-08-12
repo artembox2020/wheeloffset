@@ -99,24 +99,18 @@ class SpecsController extends Controller
 		foreach ($years as $k=>$v) {
 			$yearsIds[] = $k;
 			$i++;
-			if ($i==3) {
+			if ($i==5) {
 				break;
 			}
 		}
 		
 		$completionsTimes = AutoCompletion::getItemsByYearOrderTime($yearsIds);
-		
+	    
 		foreach ($completionsTimes as $k=>&$v) {
 			$v['year'] = $years[$k];
 		}
 		
-		//d($completionsTimes);
-		
-		//$fastests = AutoCompletion::getFastest(6);
-		
-        if (isset($_GET['t'])) {
-            d($model);
-        }
+        $modelByYears = AutoModel::getYears($model['id'], false, 'year');
         
 		$this->render('0_60_times_model', array(
 			'completionsCarsWithSame060Time' => $completionsCarsWithSame060Time,
@@ -124,6 +118,7 @@ class SpecsController extends Controller
 			'make' => $make,
 			'model' => $model,
 			'models' => $models,
+			'modelByYears' => $modelByYears,
 			'competitors' => $competitors,
 			'completionsTimes' => $completionsTimes,
 			'description' => str_replace(array('[make]', '[model]'), array($make['title'], $model['title']), SiteConfig::getInstance()->getValue('0_60_times_model_description')),

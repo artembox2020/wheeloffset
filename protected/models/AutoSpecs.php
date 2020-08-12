@@ -4,6 +4,9 @@ class AutoSpecs extends CActiveRecord
 {	
 	const SPEC_ENGINE = 120;
 	const SPEC_TRANSMISSION = 141;
+	const SPEC_TURBOCHARGER = 189;
+	const SPEC_BRAKES = 123;
+	const SPEC_DRIVE_TYPE = 126;
 
 	const CACHE_KEY_LIST = 'AUTO_SPECS_LIST__';
 	const CACHE_KEY_LIST_TYPE = 'AUTO_SPECS_LIST_TYPE_';
@@ -329,8 +332,8 @@ class AutoSpecs extends CActiveRecord
 		}
 		
 		$criteria=new CDbCriteria;
-		$criteria->condition = 'group_id IS NULL';
-		$criteria->order = 'rank';
+		$criteria->condition = '`group_id` IS NULL';
+		$criteria->order = '`rank`';
 		$specs = self::model()->findAll($criteria);		
 			
 		if (!empty($specs)) {	

@@ -7,8 +7,8 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'id'=>'wheeloffset',
-	'name'=>'wheeloffset',
+	'id'=>'autotk',
+	'name'=>'autotk',
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',

@@ -53,6 +53,10 @@ class AutoModelYear extends CActiveRecord
                 'types' => 'jpg,png,gif,jpeg',
                 'allowEmpty' => true
             ),
+            array('cd_zero_to_60_mph, cd_zero_to_100_mph, cd_zero_to_130_mph, cd_rolling_start_5_60_mph, 
+                cd_top_gear_30_50_mph, cd_top_gear_50_70_mph, cd_standing_1_4_mile_time, cd_roadholding_300_ft_dia_skidpad', 'numerical'),
+            array('cd_standing_1_4_mile_speed, cd_braking_70_0_mph', 'numerical', 'integerOnly' => true),
+            array('cd_source', 'safe'),
         );
     }
 
@@ -99,6 +103,17 @@ class AutoModelYear extends CActiveRecord
             'thread_size_id' => 'Thread Size',
             'center_bore_id' => 'Center Bore',
             'platform_model_id' => 'Platform Model',
+            'cd_zero_to_60_mph' => 'Zero to 60 mph',
+            'cd_zero_to_100_mph' => 'Zero to 100 mph',
+            'cd_zero_to_130_mph' => 'Zero to 130 mph',
+            'cd_rolling_start_5_60_mph' => 'Rolling start, 5-60 mph',
+            'cd_top_gear_30_50_mph' => 'Top gear, 30-50 mph',
+            'cd_top_gear_50_70_mph' => 'Top gear, 50-70 mph',
+            'cd_standing_1_4_mile_time' => 'Standing ¼-mile time',
+            'cd_standing_1_4_mile_speed' => 'Standing ¼-mile speed',
+            'cd_braking_70_0_mph' => 'Braking, 70-0 mph',
+            'cd_roadholding_300_ft_dia_skidpad' => 'Roadholding, 300-ft-dia skidpad',
+            'cd_source' => 'CnD Source',						
         );
     }
 
@@ -354,6 +369,42 @@ class AutoModelYear extends CActiveRecord
         return self::PHOTO_DIR . $subdir . '/' . $this->file_name;
     }
 
+    public static function getThumbByFile($file, $width = null, $height = null, $mode = 'origin')
+    {
+        $dir = self::getImage_directory();
+        $originFile = $dir . $file;
+
+        if (!is_file($originFile)) {
+            return "http://www.placehold.it/{$width}x{$height}/EFEFEF/AAAAAA";
+        }
+
+        if ($mode == 'origin') {
+            return self::PHOTO_DIR . $file;
+        }
+
+        $subdir = $width;
+        $subdirPath = $dir . $subdir;
+        $subdirPathFile = $subdirPath . '/' . $file;
+
+        if (file_exists($subdirPath) == false) {
+            mkdir($subdirPath);
+            chmod($subdirPath, 0777);
+        }
+
+        if ($mode == 'resize') {
+            Yii::app()->iwi->load($originFile)
+                ->resize($width, $height)
+                ->save($subdirPathFile);
+        } else {
+            Yii::app()->iwi->load($originFile)
+                ->crop($width, $height)
+                ->save($subdirPathFile);
+        }
+
+        return self::PHOTO_DIR . $subdir . '/' . $file;
+    }
+    
+    
     public static function thumb($id, $width = null, $height = null, $mode = 'origin')
     {
         $id = (int) $id;
@@ -1544,4 +1595,52 @@ class AutoModelYear extends CActiveRecord
 
         return $data;
     }
+    
+    public static function isCarAndDrive($data)
+    {
+        return !empty($data['cd_zero_to_60_mph']) ||
+               !empty($data['cd_zero_to_100_mph']) ||
+               !empty($data['cd_zero_to_130_mph']) ||
+               !empty($data['cd_rolling_start_5_60_mph']) ||
+               !empty($data['cd_top_gear_30_50_mph']) ||
+               !empty($data['cd_top_gear_50_70_mph']) ||
+               (!empty($data['cd_standing_1_4_mile_time']) && !empty($data['cd_standing_1_4_mile_speed'])) ||
+               !empty($data['cd_braking_70_0_mph']) ||
+               !empty($data['cd_roadholding_300_ft_dia_skidpad']);      
+    }
+    
+    public static function getCarAndDriveItems($data)
+    {
+        $items = [];
+        if ($data['cd_zero_to_60_mph'] > 0) {
+            $items['Zero to 60 mph'] = sprintf('%s sec', $data['cd_zero_to_60_mph']);
+        }
+        if ($data['cd_zero_to_100_mph'] > 0) {
+            $items['Zero to 100 mph'] = sprintf('%s sec', $data['cd_zero_to_100_mph']);
+        }
+        if ($data['cd_zero_to_130_mph'] > 0) {
+            $items['Zero to 130 mph'] = sprintf('%s sec', $data['cd_zero_to_130_mph']);
+        }
+        if ($data['cd_rolling_start_5_60_mph'] > 0) {
+            $items['Rolling start, 5-60 mph'] = sprintf('%s sec', $data['cd_rolling_start_5_60_mph']);
+        }
+        if ($data['cd_top_gear_30_50_mph'] > 0) {
+            $items['Top gear, 30-50 mph'] = sprintf('%s sec', $data['cd_top_gear_30_50_mph']);
+        }
+        if ($data['cd_top_gear_50_70_mph'] > 0) {
+            $items['Top gear, 50-70 mph'] = sprintf('%s sec', $data['cd_top_gear_50_70_mph']);
+        }
+        if ($data['cd_standing_1_4_mile_time'] > 0 && $data['cd_standing_1_4_mile_speed'] > 0) {
+            $items['Standing ¼-mile'] = sprintf('%s sec @ %s mph', $data['cd_standing_1_4_mile_time'], $data['cd_standing_1_4_mile_speed']);
+        }
+        if ($data['cd_braking_70_0_mph'] > 0) {
+            $items['Braking, 70-0 mph'] = sprintf('%s ft', $data['cd_braking_70_0_mph']);
+        }
+        if ($data['cd_roadholding_300_ft_dia_skidpad'] > 0) {
+            $items['Roadholding, 300-ft-dia skidpad'] = sprintf('%s g', $data['cd_roadholding_300_ft_dia_skidpad']);
+        }
+        
+        return $items;
+    }
+    
 }

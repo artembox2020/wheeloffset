@@ -329,6 +329,7 @@ class TiresController extends Controller
 		$this->meta_keywords = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('seo_tires_size_make_meta_keywords'));
 		$this->meta_description = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('seo_tires_size_make_meta_description'));		
 		$header_text_block = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('tires_size_make_header_text_block'));		
+        $this->canonical = 'https://autotk.com' . Tire::url($tire);
 			
 		$this->breadcrumbs = array(
 			'/' => 'Home',
@@ -336,7 +337,7 @@ class TiresController extends Controller
 			Tire::url($tire) => Tire::format($tire),
 			'#' => $make['title'],
 		);	
-			
+        
 		$this->render('size_make', array(
 			'make' => $make,
 			'tire' => $tire,

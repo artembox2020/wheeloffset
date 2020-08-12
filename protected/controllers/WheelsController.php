@@ -125,7 +125,7 @@ class WheelsController extends Controller
 			$wheelsDataItems[$k]['custom_rim_sizes'] = Project::getCustomRimSizes($v['ids']);
 		}
 		
-		$this->render('model', array(
+      	$this->render('model', array(
 			'lastModelYear' => $lastModelYear,
 			'make' => $make,
 			'model' => $model,
@@ -135,9 +135,16 @@ class WheelsController extends Controller
 		));
 	}
 	
+	public function actionModelYear($makeAlias, $modelAlias, $year)
+	{
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: /wheels/{$makeAlias}/{$modelAlias}/");
+        exit();	
+    }
+	
 	public function actionDiametrWidth($diametr, $width)
-	{	
-		$listDiameter 	= TireRimDiameter::getList();
+	{
+	    $listDiameter 	= TireRimDiameter::getList();
 		$listWidth 		= RimWidth::getAll();
 		$allRims 		= Project::getAllRims();
 		
@@ -172,7 +179,7 @@ class WheelsController extends Controller
 		$this->pageTitle = str_replace(array('[diametr]', '[width]'), array($diametr, $width, ), SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_title'));
 		$this->meta_keywords = str_replace(array('[diametr]', '[width]'), array($diametr, $width), SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_meta_keywords'));
 		$this->meta_description = str_replace(array('[diametr]', '[width]'), array($diametr, $width), SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_meta_description'));		
-		$header_text_block = str_replace(array('[diametr]', '[width]'), array($diametr, $width), SiteConfig::getInstance()->getValue('wheels_wheels_diametr_width_header_text_block'));		
+		$header_text_block = str_replace(array('[diametr]', '[width]'), array($diametr, $width), SiteConfig::getInstance()->getValue('wheels_diametr_width_header_text_block'));
 			
 		$this->breadcrumbs = array(
 			'/' => 'Home',
@@ -234,8 +241,6 @@ class WheelsController extends Controller
 			}
 		}	
 
-		//d($tireRangeData);
-		
 		$this->render('diametr_width', array(
 			'header_text_block' => $header_text_block,
 			'rim' => $rim,
@@ -347,8 +352,7 @@ class WheelsController extends Controller
 		$this->pageTitle = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_tire_title'));
 		$this->meta_keywords = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_tire_meta_keywords'));
 		$this->meta_description = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('seo_wheels_diametr_width_tire_meta_description'));		
-		$header_text_block = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('wheels_wheels_diametr_width_tire_header_text_block'));		
-			
+		$header_text_block = str_replace($replaceFrom, $replaceTo, SiteConfig::getInstance()->getValue('wheels_diametr_width_tire_header_text_block'));
 		$this->breadcrumbs = array(
 			'/' => 'Home',
 			'/wheels.html' => 'Wheels',

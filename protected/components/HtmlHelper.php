@@ -55,4 +55,14 @@ class HtmlHelper
 	{
 		return '$' . number_format($value, 0, '', ',');
 	}
+
+    public static function bulb_alias($value)
+	{
+        $value = TextHelper::urlSafe($value);
+        if (is_numeric($value)) {
+            $value .= '-2';
+        }
+        
+		return $value;
+	}
 }

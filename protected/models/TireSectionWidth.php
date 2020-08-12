@@ -91,7 +91,7 @@ class TireSectionWidth extends CActiveRecord
 		$key = Tags::TAG_TIRE_SECTION_WIDTH . '_getAll__';
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = (array)self::model()->findAll(array('order'=>'rank, value'));
+			$data = (array)self::model()->findAll(array('order'=>'`rank`, `value`'));
 			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_TIRE_SECTION_WIDTH));
 		}
 		

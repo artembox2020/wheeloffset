@@ -84,7 +84,12 @@ class TuningController extends Controller
 		}
 		
 		$filter = FilterHelper::tuningParse($filter);
-		
+        //if (!empty($filter['hasRedirect'])) {
+        if (!empty($filter)) {
+            header("Location: /tuning/$makeAlias/$modelAlias/", false, 301);
+            die();
+        }
+        
 		$offset = (int)Yii::app()->request->getParam('offset');
 		$limit	= 50;
 		

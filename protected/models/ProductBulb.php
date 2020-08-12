@@ -28,7 +28,8 @@ class ProductBulb extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, app, part', 'safe'),
+			array('part', 'required'),
+			array('id', 'safe'),
 			array('alias', 'unique'),
 		);
 	}		
@@ -95,7 +96,8 @@ class ProductBulb extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('part', $this->part, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,14 +107,19 @@ class ProductBulb extends CActiveRecord
 		));
     }		
 	
-	public static function getItems()
+	public static function getItems($exceptIds = [])
 	{
-		$key = Tags::TAG_PRODUCT_BULB . 'getItems_';
+		$key = Tags::TAG_PRODUCT_BULB . 'getItems_' . serialize($exceptIds);
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			
-			$data = Yii::app()->db->createCommand("SELECT part, app, alias FROM " . self::model()->tableName())->queryAll();
+            $where = '';
+            if (!empty($exceptIds)) {
+                $where = "WHERE id NOT IN(". implode(',', $exceptIds) .")";
+            }
+            
+			$data = Yii::app()->db->createCommand("SELECT part, alias FROM " . self::model()->tableName() . " {$where}")->queryAll();
 			
 			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_PRODUCT_BULB));
 		}
@@ -125,7 +132,7 @@ class ProductBulb extends CActiveRecord
 		$key = Tags::TAG_PRODUCT_BULB . '_getItemByAlias_' . $alias;
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			
 			$row = Yii::app()->db->createCommand("SELECT * FROM " . self::model()->tableName() . " WHERE alias = '{$alias}'")->queryRow();
 			if (!empty($row)) {
@@ -140,30 +147,38 @@ class ProductBulb extends CActiveRecord
 
 	public static function getItemsByYear($model_year_id)
 	{
-		$key = Tags::TAG_PRODUCT_BULB . 'getItemsByYear' . $model_year_id;
+		$key = Tags::TAG_PRODUCT_BULB . '_getItemsByYear' . $model_year_id;
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			
-			$rows = Yii::app()->db->createCommand("SELECT bulb_id FROM auto_model_year_bulb WHERE model_year_id = {$model_year_id}")->queryAll();
-			$ids = [];
-			foreach ($rows as $row) {
-				$ids[] = $row['bulb_id'];
-			}
-			
-			if (!empty($ids)) {
-				$criteria = new CDbCriteria;
-				$criteria->addInCondition('id', $ids);
-				$items = self::model()->findAll($criteria);
-				foreach ($items as $item) {
-					$data[] = [
-						'app' => $item->app,
-						'part' => $item->part,
-					];
-				}
-			}
-			
-			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_PRODUCT_BULB, Tags::TAG_MODEL_YEAR));
+            
+            $sql = "
+                SELECT 
+                    b.id AS bulb_id,
+                    b.alias AS bulb_alias,
+                    b.part AS part,
+                    p.title AS position,
+                    p.id AS position_id,
+                    p.short_title AS position_short_title,
+                    p.alias AS position_alias,
+                    p.class AS class,
+                    GROUP_CONCAT(DISTINCT i.type) AS types
+                FROM auto_model_year_bulb AS vs
+                LEFT JOIN product_bulb AS b ON vs.bulb_id = b.id
+                LEFT JOIN product_bulb_position AS p ON vs.position_id = p.id
+                LEFT JOIN product_bulb_items AS i ON b.id = i.bulb_id
+                WHERE vs.model_year_id = {$model_year_id}
+                GROUP BY p.id, b.id
+                ORDER BY p.type ASC, p.id ASC
+            ";
+            
+            $data = Yii::app()->db->createCommand($sql)->queryAll();
+            
+			Yii::app()->cache->set($key, $data, 0, new Tags(
+                Tags::TAG_PRODUCT_BULB_POSITION, 
+                Tags::TAG_MODEL_YEAR
+            ));
 		}
 		
 		return $data;
@@ -171,20 +186,20 @@ class ProductBulb extends CActiveRecord
 	
 	public static function getYears()
 	{
-		$key = Tags::TAG_PRODUCT_BULB . 'getYears';
+		$key = Tags::TAG_PRODUCT_BULB . '_getYears_';
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			$sql = "SELECT  
 						y.year AS v
-					FROM auto_model_year_bulb AS b
-					LEFT JOIN auto_model_year AS y ON b.model_year_id = y.id 
+					FROM auto_model_year AS y
 					LEFT JOIN auto_model AS m ON y.model_id = m.id 
 					LEFT JOIN auto_make AS k ON m.make_id = k.id 
 					WHERE 
 						y.is_active = 1 AND
 						y.is_deleted = 0 AND
 						m.is_active = 1 AND
+						m.is_bulb = 1 AND
 						m.is_deleted = 0 AND
 						k.is_active = 1 AND
 						k.is_deleted = 0
@@ -208,15 +223,14 @@ class ProductBulb extends CActiveRecord
 	
 	public static function getMakesByYear($year)
 	{
-		$key = Tags::TAG_PRODUCT_BULB . 'getMakesByYear' . $year;
+		$key = Tags::TAG_PRODUCT_BULB . '_getMakesByYear' . $year;
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			$sql = "SELECT  
 						k.alias AS alias,
 						k.title AS title
-					FROM auto_model_year_bulb AS b
-					LEFT JOIN auto_model_year AS y ON b.model_year_id = y.id 
+					FROM auto_model_year AS y
 					LEFT JOIN auto_model AS m ON y.model_id = m.id 
 					LEFT JOIN auto_make AS k ON m.make_id = k.id 
 					WHERE 
@@ -224,6 +238,7 @@ class ProductBulb extends CActiveRecord
 						y.is_active = 1 AND
 						y.is_deleted = 0 AND
 						m.is_active = 1 AND
+						m.is_bulb = 1 AND
 						m.is_deleted = 0 AND
 						k.is_active = 1 AND
 						k.is_deleted = 0						
@@ -238,7 +253,7 @@ class ProductBulb extends CActiveRecord
 				$data[$row['alias']] = $row['alias'];
 			}
 			
-			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_PRODUCT_BULB, Tags::TAG_MODEL_YEAR, Tags::TAG_MODEL, Tags::TAG_MAKE));
+			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_MODEL_YEAR, Tags::TAG_MODEL, Tags::TAG_MAKE));
 		}
 		
 		return $data;
@@ -249,12 +264,11 @@ class ProductBulb extends CActiveRecord
 		$key = Tags::TAG_PRODUCT_BULB . 'getModelsByMake_' . $make_id . '_' . $year;
 		$data = Yii::app()->cache->get($key);
 		if ($data === false) {
-			$data = array();
+			$data = [];
 			$sql = "SELECT  
 						m.alias AS alias,
 						m.title AS title
-					FROM auto_model_year_bulb AS b
-					LEFT JOIN auto_model_year AS y ON b.model_year_id = y.id 
+					FROM auto_model_year AS y
 					LEFT JOIN auto_model AS m ON y.model_id = m.id 
 					LEFT JOIN auto_make AS k ON m.make_id = k.id 
 					WHERE 
@@ -263,6 +277,7 @@ class ProductBulb extends CActiveRecord
 						y.is_active = 1 AND
 						y.is_deleted = 0 AND
 						m.is_active = 1 AND
+						m.is_bulb = 1 AND
 						m.is_deleted = 0 AND
 						k.is_active = 1 AND
 						k.is_deleted = 0						
@@ -277,39 +292,36 @@ class ProductBulb extends CActiveRecord
 				$data[$row['alias']] = $row['alias'];
 			}
 			
-			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_PRODUCT_BULB, Tags::TAG_MODEL_YEAR, Tags::TAG_MODEL, Tags::TAG_MAKE));
+			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_MODEL_YEAR, Tags::TAG_MODEL, Tags::TAG_MAKE));
 		}
 		
 		return $data;
 	}	
-	
-	
-	public static function getIsssetByMake($make_id)
+    
+    public static function resolvePartName($value)
+    {
+        if ($value === 'NEON') {
+            $value = 'LED';
+        } elseif (substr_count($value, 'LED') && $value !== 'LED') {
+            $value = str_replace('LED', ' LED', $value);
+        }
+        return $value;
+    }
+
+    public static function getItem($attributes)
+    {
+        $model = self::model()->findByAttributes($attributes);
+        if (empty($model)) {
+            $model = new self;
+            $model->attributes = $attributes;
+            $model->save();
+        }
+        return $model;
+    }
+    
+	public static function getList()
 	{
-		$key = Tags::TAG_PRODUCT_BULB . 'getIsssetByMake' . $make_id;
-		$data = Yii::app()->cache->get($key);
-		if ($data === false) {
-			$data = array();
-			$sql = "SELECT  
-						y.model_id AS model_id,
-						COUNT(*) AS c
-					FROM auto_model_year_bulb AS b
-					LEFT JOIN auto_model_year AS y ON b.model_year_id = y.id 
-					LEFT JOIN auto_model AS m ON y.model_id = m.id 
-					WHERE m.make_id = {$make_id}
-					GROUP BY y.model_id
-					";
-			
-			
-			$rows = Yii::app()->db->createCommand($sql)->queryAll();
-			
-			foreach ($rows as $row) {
-				$data[$row['model_id']] = $row['c'];
-			}
-			
-			Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_PRODUCT_BULB, Tags::TAG_MODEL_YEAR, Tags::TAG_MODEL));
-		}
-		
-		return $data;
-	}	
+		return CHtml::listData(self::model()->findAll(['order' => 'part ASC']), 'id', 'part');
+	}
+    
 }

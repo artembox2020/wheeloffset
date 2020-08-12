@@ -245,7 +245,7 @@ class AutoMake extends CActiveRecord
 
 	public static function getAllFrontFull()
 	{
-		$key	= Tags::TAG_MAKE . 'getAllFrontFull';
+		$key	= Tags::TAG_MAKE . '_getAllFrontFull';
 		$data 	= Yii::app()->cache->get($key);
 			
 		if ($data == false) {
@@ -259,6 +259,7 @@ class AutoMake extends CActiveRecord
 			$items = self::model()->findAll($criteria);
 			foreach ($items as $item) {
 				$data[$item->id] = array(
+					'id' => $item->id,
 					'alias' => $item->alias,
 					'title' => $item->title,
 				);
@@ -283,7 +284,7 @@ class AutoMake extends CActiveRecord
 	
 	public static function getModels($make_id)
 	{
-		$key = Tags::TAG_MODEL . '__LIST_MODELS__'.$make_id;
+		$key = Tags::TAG_MODEL . '_LIST_MODELS_'.$make_id;
 		$dataModels = Yii::app()->cache->get($key);
 		if ($dataModels == false && !is_array($dataModels)) {
 			$dataModels = array();
@@ -310,6 +311,7 @@ class AutoMake extends CActiveRecord
 					'title' => $model->title,
 					'alias' => $model->alias,
 					'url' => $model->urlFront,
+					'is_bulb' => $model->is_bulb,
 					'price' => array(
 						'min' => $price['mmin'],
 						'max' => $price['mmax'],
@@ -515,5 +517,42 @@ class AutoMake extends CActiveRecord
 		
 		return $data;
 	}	
+    
+    public static function getItemsByProductCategoryId($categoryId)
+    {
+		$key = Tags::TAG_MAKE . 'getItemsByProductCategoryId'.$categoryId;
+		$data = Yii::app()->cache->get($key);
+		if ($data == false) {
+			
+			$sql = "SELECT 
+						k.title AS title,
+						k.alias AS alias,
+						k.id AS id
+					FROM product_category_model AS cm
+					LEFT JOIN auto_model AS m ON cm.model_id = m.id
+					LEFT JOIN auto_make AS k ON m.make_id = k.id
+					WHERE 
+						k.is_active = 1 AND 
+						k.is_deleted = 0 AND
+						m.is_active = 1 AND 
+						m.is_deleted = 0 AND
+						cm.is_active = 1 AND 
+						cm.category_id = {$categoryId}
+					GROUP BY k.id
+					ORDER BY title ASC
+					";
+					
+			$data = Yii::app()->db->createCommand($sql)->queryAll();	
+
+			Yii::app()->cache->set($key, $data, 0, new Tags(
+                Tags::TAG_MAKE, 
+                Tags::TAG_MODEL, 
+                Tags::TAG_PRODUCT_CATEGORY,
+                Tags::TAG_PRODUCT_CATEGORY_MODEL
+            ));
+		}	
+		
+		return $data;        
+    }
 
 }

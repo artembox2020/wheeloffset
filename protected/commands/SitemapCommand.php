@@ -14,10 +14,10 @@ class SitemapCommand extends CConsoleCommand
         date_default_timezone_set('America/Los_Angeles');
         return parent::init();
     }
-
+    
     public function actionRun()
     {
-        $limit = 10000; //(int)SiteConfig::getInstance()->getValue('count_items_in_file');	
+        $limit = 50000; //(int)SiteConfig::getInstance()->getValue('count_items_in_file');	
 
         $mapFiles = array(
             '/',
@@ -27,7 +27,9 @@ class SitemapCommand extends CConsoleCommand
             '/horsepower.html',
             '/dimensions.html',
             '/tuning.html',
+            '/bulbs.html',
             '/weight/',
+            '/parts/',
         );
 
         $mapModules = array(
@@ -37,9 +39,159 @@ class SitemapCommand extends CConsoleCommand
             '/horsepower/',
             '/dimensions/',
             '/tuning/',
-            '/wheels/',
         );
 
+        //print_r(ProductCategory::getRootItemsWithChildren());
+        //die();
+        $partsLinks = [];
+        foreach (ProductCategory::getRootItemsWithChildren() as $root) {
+            $category = ProductCategory::getRootItemByAlias($root['alias']);
+            $treeMap = ProductCategory::getTreeMap();
+            
+            $partsLinks[] = $root['url'];
+            
+            $file = "/sitemap/parts_{$root['alias']}.xml";
+            $doc = new DOMDocument("1.0", 'utf-8');
+            $urlset = $doc->createElement("urlset");
+            $doc->appendChild($urlset);
+            $xmlns = $doc->createAttribute("xmlns");
+            $urlset->appendChild($xmlns);
+            $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+            $xmlns->appendChild($value);            
+
+            $rootLinks = [];
+            if (!empty($root['children'])) {
+                foreach ($root['children'] as $childItem) {
+                    $rootLinks[] = $childItem['url'];
+                    
+                    $child = ProductCategory::getChildItemByParentIdAndAlias($category['id'], $childItem['alias']);
+
+                    // generate children xml files
+                    $fileChild = "/sitemap/parts_{$root['alias']}_{$childItem['alias']}.xml";
+                    $childLinks = [];
+                    $docChild = new DOMDocument("1.0", 'utf-8');
+                    $urlsetChild = $docChild->createElement("urlset");
+                    $docChild->appendChild($urlsetChild);
+                    $xmlns = $docChild->createAttribute("xmlns");
+                    $urlsetChild->appendChild($xmlns);
+                    $value = $docChild->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+                    $xmlns->appendChild($value);            
+                    foreach (AutoMake::getItemsByProductCategoryId($child['id']) as $make) {
+                        $childLinks[] = $childItem['url'] . 'make-' .$make['alias'] . '/';
+                        
+                        foreach (ProductCategoryModel::getModelsByMakeIdAndCategoryIdsWithChildCategories($make['id'], $treeMap[$child['id']]['ids'], 3) as $model) {
+                            $childLinks[] = $childItem['url'] . 'make-' .$make['alias'] . '/' . $model['alias'] . '/';
+                        }
+                    }
+                    
+                    if (!empty($childLinks)) {
+                        foreach ($childLinks as $link) {
+                            $this->addItem($docChild, $urlsetChild, array(
+                               'url' => self::SITE_URL . $link,
+                               'lastmod' => time(),
+                            ));
+                        }
+
+                        $mapFiles[] = $fileChild;
+
+                        $docChild->formatOutput = true;
+                        $docChild->save(dirname(__FILE__) . "/../../" . $fileChild);
+                    }
+                    
+                }
+            }
+            foreach (AutoMake::getItemsByProductCategoryId($root['id']) as $make) {
+                $rootLinks[] = $root['url'] . 'make-' . $make['alias'] . '/';
+                
+                $models = ProductCategoryModel::getModelsByMakeIdAndCategoryIdsWithChildCategories($make['id'], $treeMap[$category['id']]['ids'], 2);
+                foreach ($models as $model) {
+                    $rootLinks[] = $root['url'] . 'make-' . $make['alias'] . '/' . $model['alias'] . '/';
+                }
+            }
+            
+            if (!empty($rootLinks)) {
+                foreach ($rootLinks as $link) {
+                    $this->addItem($doc, $urlset, array(
+                       'url' => self::SITE_URL . $link,
+                       'lastmod' => time(),
+                    ));
+                }
+
+                $mapFiles[] = $file;
+
+                $doc->formatOutput = true;
+                $doc->save(dirname(__FILE__) . "/../../" . $file);
+            }
+        }
+        
+        foreach (AutoMake::getAllFrontFull() as $make) {
+            $partsLinks[] = '/parts/make-' . $make['alias'] . '/';
+            foreach (AutoModel::getModelsMake($make['id']) as $a => $t) {
+                $partsLinks[] = '/parts/make-' . $make['alias'] . '/' . $a . '/';
+            }
+        }
+        
+        $file = "/sitemap/parts.xml";
+        $mapFiles[] = $file;
+        $doc = new DOMDocument("1.0", 'utf-8');
+        $urlset = $doc->createElement("urlset");
+        $doc->appendChild($urlset);
+        $xmlns = $doc->createAttribute("xmlns");
+        $urlset->appendChild($xmlns);
+        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+        $xmlns->appendChild($value);            
+        foreach ($partsLinks as $url) {
+            $this->addItem($doc, $urlset, array(
+               'url' => self::SITE_URL . $url,
+               'lastmod' => time(),
+            ));
+        }
+        $doc->formatOutput = true;
+        $doc->save(dirname(__FILE__) . "/../../" . $file);
+        
+        //guides
+        $i = 0;
+        do {
+            $file = "/sitemap/parts_guides_{$i}.xml";
+            $doc = new DOMDocument("1.0", 'utf-8');
+            $urlset = $doc->createElement("urlset");
+            $doc->appendChild($urlset);
+            $xmlns = $doc->createAttribute("xmlns");
+            $urlset->appendChild($xmlns);
+            $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+            $xmlns->appendChild($value);
+
+            $categoryTreeMap = ProductCategory::getTreeMap();
+            $categoryIds = array_map(function($item) { return $item['id']; }, $categoryTreeMap);
+           
+            $condition = "is_active=1 AND category_id IN(" . implode(',', $categoryIds) . ")";
+            
+            $criteria = new CDbCriteria();
+            $criteria->condition = $condition;
+            $criteria->limit = $limit / 2;
+            $criteria->offset = $i * $limit / 2;
+            $items = ProductCategoryGuide::model()->findAll($criteria);
+
+            foreach ($items as $item) {
+                $this->addItem($doc, $urlset, array(
+                    'url' => self::SITE_URL . $item->url,
+                    'lastmod' => time(),
+                ));
+            }
+
+            if (empty($items)) {
+                break;
+            }
+
+            $mapFiles[] = $file;
+
+            $doc->formatOutput = true;
+            $doc->save(dirname(__FILE__) . "/../../" . $file);
+
+            $i++;
+        } while (true);
+        
+        
         $i = 0;
         do {
             $file = "/sitemap/make{$i}.xml";
@@ -158,7 +310,7 @@ class SitemapCommand extends CConsoleCommand
                 ));
 
                 foreach ($mapModules as $uri) {
-                    if (in_array($uri, array('/0-60-times/', '/tuning/', '/wheels/'))) {
+                    if (in_array($uri, array('/0-60-times/', '/tuning/'))) {
                         continue;
                     }
 
@@ -289,30 +441,6 @@ class SitemapCommand extends CConsoleCommand
             $i++;
         } while (true);
 
-        //hp
-        $file = "/sitemap/hp.xml";
-        $doc = new DOMDocument("1.0", 'utf-8');
-        $urlset = $doc->createElement("urlset");
-        $doc->appendChild($urlset);
-        $xmlns = $doc->createAttribute("xmlns");
-        $urlset->appendChild($xmlns);
-        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
-        $xmlns->appendChild($value);
-        foreach ($hps = AutoCompletion::getHpList() as $hp) {
-            if (!$hp) {
-                continue;
-            }
-            $url = self::SITE_URL . '/horsepower/' . $hp . '/';
-            $this->addItem($doc, $urlset, array(
-                'url' => $url,
-                'lastmod' => time(),
-            ));
-        }
-        $mapFiles[] = $file;
-        $doc->formatOutput = true;
-        $doc->save(dirname(__FILE__) . "/../../" . $file);
-
-
         ////////////////////////////////////////////////////////
         $file = "/sitemap/tires_make_size.xml";
         $doc = new DOMDocument("1.0", 'utf-8');
@@ -380,9 +508,11 @@ class SitemapCommand extends CConsoleCommand
 
             $i++;
         } while (true);
-
+        
         $mapFiles[] = $this->_weight();
-
+        $mapFiles[] = $this->_wheels();
+        $mapFiles[] = $this->_bulbs();
+    
         foreach ($mapFiles as $mapFile) {
             $attributes = array(
                 'url' => self::SITE_URL . $mapFile,
@@ -457,6 +587,145 @@ class SitemapCommand extends CConsoleCommand
         $doc->formatOutput = true;
         $doc->save(dirname(__FILE__) . "/../../" . $file);
 
+        return $file;
+    }
+
+    private function _wheels()
+    {
+        $file = "/sitemap/wheels.xml";
+        $doc = new DOMDocument("1.0", 'utf-8');
+        $urlset = $doc->createElement("urlset");
+        $doc->appendChild($urlset);
+        $xmlns = $doc->createAttribute("xmlns");
+        $urlset->appendChild($xmlns);
+        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+        $xmlns->appendChild($value);
+        $mapFiles[] = $file;
+
+        $doc->formatOutput = true;
+        $doc->save(dirname(__FILE__) . "/../../" . $file);
+
+        $doc = new DOMDocument("1.0", 'utf-8');
+        $urlset = $doc->createElement("urlset");
+        $doc->appendChild($urlset);
+        $xmlns = $doc->createAttribute("xmlns");
+        $urlset->appendChild($xmlns);
+        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+        $xmlns->appendChild($value);
+
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.is_active', 1);
+        $criteria->compare('t.is_deleted', 0);
+
+        $makes = AutoMake::model()->findAll($criteria);
+
+        foreach ($makes as $make) {
+            $this->addItem($doc, $urlset, array(
+                'url' => self::SITE_URL . '/wheels/' . $make->alias . '/',
+                'lastmod' => time(),
+            ));
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.is_active', 1);
+        $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('Make.is_active', 1);
+        $criteria->compare('Make.is_deleted', 0);
+        $criteria->with = array('Make');
+
+        $models = AutoModel::model()->findAll($criteria);
+
+        foreach ($models as $model) {
+            $this->addItem($doc, $urlset, array(
+                'url' => self::SITE_URL . '/wheels/' . $model->Make->alias . '/' . $model->alias . '/',
+                'lastmod' => time(),
+            ));
+        }
+
+
+        $doc->formatOutput = true;
+        $doc->save(dirname(__FILE__) . "/../../" . $file);
+        
+        return $file;
+    }
+
+    private function _bulbs()
+    {
+        $file = "/sitemap/bulbs.xml";
+        $doc = new DOMDocument("1.0", 'utf-8');
+        $urlset = $doc->createElement("urlset");
+        $doc->appendChild($urlset);
+        $xmlns = $doc->createAttribute("xmlns");
+        $urlset->appendChild($xmlns);
+        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+        $xmlns->appendChild($value);
+        $mapFiles[] = $file;
+
+        $doc->formatOutput = true;
+        $doc->save(dirname(__FILE__) . "/../../" . $file);
+
+        $doc = new DOMDocument("1.0", 'utf-8');
+        $urlset = $doc->createElement("urlset");
+        $doc->appendChild($urlset);
+        $xmlns = $doc->createAttribute("xmlns");
+        $urlset->appendChild($xmlns);
+        $value = $doc->createTextNode('http://www.sitemaps.org/schemas/sitemap/0.9');
+        $xmlns->appendChild($value);
+
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.is_active', 1);
+        $criteria->compare('t.is_deleted', 0);
+
+        $makes = AutoMake::model()->findAll($criteria);
+
+        foreach ($makes as $make) {
+            $this->addItem($doc, $urlset, array(
+                'url' => self::SITE_URL . '/bulbs/' . $make->alias . '/',
+                'lastmod' => time(),
+            ));
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.is_active', 1);
+        $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('t.is_bulb', 1);
+        $criteria->compare('Make.is_active', 1);
+        $criteria->compare('Make.is_deleted', 0);
+        $criteria->with = array('Make');
+
+        $models = AutoModel::model()->findAll($criteria);
+
+        foreach ($models as $model) {
+            $this->addItem($doc, $urlset, array(
+                'url' => self::SITE_URL . '/bulbs/' . $model->Make->alias . '/' . $model->alias . '/',
+                'lastmod' => time(),
+            ));
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.is_active', 1);
+        $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('Make.is_active', 1);
+        $criteria->compare('Make.is_deleted', 0);
+        $criteria->compare('Model.is_active', 1);
+        $criteria->compare('Model.is_bulb', 1);
+        $criteria->compare('Model.is_deleted', 0);
+        $criteria->with = array('Model', 'Model.Make');
+
+        $models = AutoModelYear::model()->findAll($criteria);
+        foreach ($models as $model) {
+            $this->addItem($doc, $urlset, array(
+                'url' => self::SITE_URL . '/bulbs/' . $model->Model->Make->alias . '/' . $model->Model->alias . '/' . $model->year . '/',
+                'lastmod' => time(),
+            ));
+        }
+        
+
+        $doc->formatOutput = true;
+        $doc->save(dirname(__FILE__) . "/../../" . $file);
+        
         return $file;
     }
 
