@@ -1,0 +1,235 @@
+make: Tesla - model: S
+make: Mini - model: Cooper Countryman
+make: Mini - model: Cooper Clubman
+make: Mercedes-Benz - model: SLC43 AMG
+make: Mercedes-Benz - model: SL65 AMG
+make: Mercedes-Benz - model: SL63 AMG
+make: Mercedes-Benz - model: GLS63 AMG
+make: Mercedes-Benz - model: GLE63 AMG S
+make: Mercedes-Benz - model: GLE63 AMG
+make: Mercedes-Benz - model: GLE43 AMG
+make: Mercedes-Benz - model: GLC63 AMG S
+make: Mercedes-Benz - model: GLC63 AMG
+make: Mercedes-Benz - model: GLC43 AMG
+make: Mercedes-Benz - model: GLA45 AMG
+make: Mercedes-Benz - model: E63 AMG S
+make: Mercedes-Benz - model: E43 AMG
+make: Mercedes-Benz - model: E300
+make: Mercedes-Benz - model: CLA45 AMG
+make: Mercedes-Benz - model: C63 AMG S
+make: Mercedes-Benz - model: C63 AMG
+make: Mercedes-Benz - model: C43 AMG
+make: Mercedes-Benz - model: C300
+make: Mercedes-Benz - model: AMG GT S
+make: Mercedes-Benz - model: AMG GT R
+make: Mercedes-Benz - model: AMG GT C
+make: Mazda - model: 3 Sport
+make: Lexus - model: RX450hL
+make: Lexus - model: RX450h
+make: Lexus - model: RX350L
+make: Lexus - model: RX350
+make: Lexus - model: RC350
+make: Lexus - model: RC300
+make: Lexus - model: IS350
+make: Lexus - model: IS300
+make: Lexus - model: GX460
+make: Lexus - model: GS350
+make: Lexus - model: GS300
+make: Land
+make: Hyundai - model: Ioniq
+make: Honda - model: Clarity
+make: GMC - model: Sierra 3500 HD
+make: GMC - model: Sierra 2500 HD
+make: Ford - model: F-350 Super Duty
+make: Ford - model: F-250 Super Duty
+make: Chevrolet - model: Suburban 3500 HD
+make: Chevrolet - model: Silverado 3500 HD
+make: Chevrolet - model: Silverado 2500 HD
+make: BMW - model: i3s
+make: BMW - model: Alpina B6 xDrive Gran Coupe
+make: BMW - model: 650i xDrive Gran Coupe
+make: BMW - model: 650i Gran Coupe
+make: BMW - model: 640i xDrive Gran Turismo
+make: BMW - model: 640i xDrive Gran Coupe
+make: BMW - model: 640i Gran Coupe
+make: BMW - model: 540i xDrive
+make: BMW - model: 540i
+make: BMW - model: 530i xDrive
+make: BMW - model: 530i
+make: BMW - model: 530e xDrive
+make: Audi - model: TT Quattro
+make: Audi - model: A5 Sportback
+make: Audi - model: A5 Quattro
+make: Audi - model: A4 Quattro
+make: Audi - model: A3 Quattro
+make: Alfa
+make: ZERO
+make: Yamaha
+make: Vespa
+make: Triumph
+make: Suzuki - model: UH200 Burgman ABS
+make: Suzuki - model: TU250X
+make: Suzuki - model: SV650 ABS
+make: Suzuki - model: SV650
+make: Suzuki - model: S40 Boulevard
+make: Suzuki - model: RV200 VanVan 200
+make: Suzuki - model: M90 Boulevard
+make: Suzuki - model: M50 Boulevard
+make: Suzuki - model: M109R Boulevard B.O.S.S.
+make: Suzuki - model: GSX250R
+make: Suzuki - model: GSX1300R Hayabusa
+make: Suzuki - model: GSX-S750Z
+make: Suzuki - model: GSX-S750
+make: Suzuki - model: GSX-S1000Z
+make: Suzuki - model: GSX-S1000F ABS
+make: Suzuki - model: GSX-S1000 ABS
+make: Suzuki - model: GSX-R750
+make: Suzuki - model: GSX-R600
+make: Suzuki - model: GSX-R1000R
+make: Suzuki - model: GSX-R1000 ABS
+make: Suzuki - model: GSX-R1000
+make: Suzuki - model: DL650A V-Strom XT ABS
+make: Suzuki - model: DL650A V-Strom ABS
+make: Suzuki - model: DL1000 V-Strom XT
+make: Suzuki - model: DL1000 V-Strom
+make: Suzuki - model: C90T Boulevard
+make: Suzuki - model: C90 Boulevard B.O.S.S.
+make: Suzuki - model: C50T Boulevard
+make: Suzuki - model: C50 Boulevard
+make: Suzuki - model: AN650A Burgman ABS Executive
+make: Ski-Doo
+make: Polaris
+make: Piaggio
+make: Nissan - model: Qashqai
+make: Nissan - model: NV3500
+make: Nissan - model: NV2500
+make: Nissan - model: NV1500
+make: Nissan - model: Micra
+make: Mitsubishi - model: RVR
+make: Mini - model: Cooper
+make: Mercedes-Benz - model: GLE550
+make: Mercedes-Benz - model: GLC63 S
+make: Mercedes-Benz - model: GLC63
+make: Mercedes-Benz - model: GLC350e
+make: Mercedes-Benz - model: G65 AMG
+make: Mercedes-Benz - model: G63 AMG
+make: Mercedes-Benz - model: G550 4x4
+make: Mercedes-Benz - model: G550
+make: Mercedes-Benz - model: E63 AMG
+make: Mercedes-Benz - model: E400
+make: Mercedes-Benz - model: CLS63 AMG S
+make: Mercedes-Benz - model: CLS400
+make: Mercedes-Benz - model: C350e
+make: Mercedes-Benz - model: B250e
+make: Mercedes-Benz - model: B250
+make: Lexus - model: NX300h
+make: Lexus - model: NX300
+make: Lexus - model: GS450h
+make: Lexus - model: ES350
+make: Lexus - model: ES300h
+make: Kia - model: Forte5
+make: Kawasaki
+make: Indian
+make: Honda - model: VT750C2B Shadow Phantom
+make: Honda - model: VT13CXA Fury ABS
+make: Honda - model: VT13CX Fury
+make: Honda - model: Grom 125 ABS
+make: Honda - model: Grom 125
+make: Honda - model: CMX500 Rebel 500 ABS
+make: Honda - model: CMX500 Rebel 500
+make: Honda - model: CMX300 Rebel 300 ABS
+make: Honda - model: CMX300 Rebel 300
+make: Honda - model: CBR650F ABS
+make: Honda - model: CBR650F
+make: Honda - model: CB650F ABS
+make: Honda - model: CB650F
+make: Harley
+make: Freightliner
+make: Ford - model: Transit-350 HD
+make: Ford - model: Special Service Police Sedan
+make: Ford - model: Police Interceptor Utility
+make: Ford - model: Police Interceptor Sedan
+make: Ford - model: C-Max
+make: Ducati
+make: Can-Am
+make: BMW - model: S1000XR
+make: BMW - model: S1000RR
+make: BMW - model: S1000R
+make: BMW - model: R1200RT
+make: BMW - model: R1200RS
+make: BMW - model: R1200R
+make: BMW - model: R1200GS Adventure
+make: BMW - model: R1200GS
+make: BMW - model: R nine T Urban G/S
+make: BMW - model: R nine T Scrambler
+make: BMW - model: R nine T Racer
+make: BMW - model: R nine T Pure
+make: BMW - model: R nine T
+make: BMW - model: M550i xDrive
+make: BMW - model: M240i xDrive
+make: BMW - model: M240i
+make: BMW - model: K1600GTL
+make: BMW - model: K1600B
+make: BMW - model: G310R
+make: BMW - model: G310GS
+make: BMW - model: F700GS
+make: BMW - model: C650GT
+make: BMW - model: 650i xDrive
+make: BMW - model: 650i
+make: BMW - model: 640i xDrive
+make: BMW - model: 640i
+make: BMW - model: 540d xDrive
+make: BMW - model: 440i xDrive Gran Coupe
+make: BMW - model: 440i xDrive
+make: BMW - model: 440i Gran Coupe
+make: BMW - model: 440i
+make: BMW - model: 430i xDrive Gran Coupe
+make: BMW - model: 430i xDrive
+make: BMW - model: 430i Gran Coupe
+make: BMW - model: 430i
+make: BMW - model: 340i xDrive
+make: BMW - model: 340i GT xDrive
+make: BMW - model: 340i
+make: BMW - model: 330i xDrive
+make: BMW - model: 330i GT xDrive
+make: BMW - model: 330i
+make: BMW - model: 328d xDrive
+make: Tesla - model: S
+make: Mini - model: Cooper Countryman
+make: Mini - model: Cooper Clubman
+make: Mercedes-Benz - model: SLC43 AMG
+make: Mercedes-Benz - model: SL65 AMG
+make: Mercedes-Benz - model: SL63 AMG
+make: Mercedes-Benz - model: GLS63 AMG
+make: Mercedes-Benz - model: GLE63 AMG S
+make: Mercedes-Benz - model: GLE63 AMG
+make: Mercedes-Benz - model: GLE43 AMG
+make: Mercedes-Benz - model: GLC63 AMG S
+make: Mercedes-Benz - model: GLC63 AMG
+make: Mercedes-Benz - model: GLC43 AMG
+make: Mercedes-Benz - model: GLA45 AMG
+make: Mercedes-Benz - model: E63 AMG S
+make: Mercedes-Benz - model: E43 AMG
+make: Mercedes-Benz - model: E300
+make: Mercedes-Benz - model: CLA45 AMG
+make: Mercedes-Benz - model: C63 AMG S
+make: Mercedes-Benz - model: C63 AMG
+make: Mercedes-Benz - model: C43 AMG
+make: Mercedes-Benz - model: C300
+make: Mercedes-Benz - model: AMG GT S
+make: Mercedes-Benz - model: AMG GT R
+make: Mercedes-Benz - model: AMG GT C
+make: Mazda - model: 3 Sport
+make: Lexus - model: RX450hL
+make: Lexus - model: RX450h
+make: Lexus - model: RX350L
+make: Lexus - model: RX350
+make: Lexus - model: RC350
+make: Lexus - model: RC300
+make: Lexus - model: IS350
+make: Lexus - model: IS300
+make: Lexus - model: GX460
+make: Lexus - model: GS350
+make: Lexus - model: GS300
+make: Land
+make: Hyundai - model: Ioniq
