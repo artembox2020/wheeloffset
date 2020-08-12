@@ -55,8 +55,8 @@ function conf($key, $params = []) {
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'id'=>'autotk',
-	'name'=>'autotk',
+	'id'=>'wheeloffset',
+	'name'=>'wheeloffset',
 
 	// preloading 'log' component
 	'preload'=>array(
