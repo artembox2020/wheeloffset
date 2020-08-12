@@ -1,0 +1,60 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "944586e108d65c582dcb478489fddf7a",
+    "packages": [
+        {
+            "name": "2amigos/yii-aws",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii-aws.git",
+                "reference": "5cbe9fc43e6f85b78f2fd185cb6740cb6abec7ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii-aws/zipball/5cbe9fc43e6f85b78f2fd185cb6740cb6abec7ef",
+                "reference": "5cbe9fc43e6f85b78f2fd185cb6740cb6abec7ef",
+                "shasum": ""
+            },
+            "type": "yii-extension",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://2amigos.us"
+                }
+            ],
+            "description": "Amazon Web Services SDK PHP 2 Wrapper.",
+            "keywords": [
+                "amazon",
+                "aws",
+                "yii"
+            ],
+            "time": "2013-06-01 17:18:46"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "2amigos/yii-aws": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

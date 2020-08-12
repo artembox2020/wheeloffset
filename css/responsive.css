@@ -1,0 +1,124 @@
+@media screen and (min-width:600px){
+	nav:before{
+		display:none;
+	}
+	.menu-list{
+		display:block;
+	}
+	
+	.menu-list li{
+		display:inline-block;
+	}
+	
+	.all-makes td, .all-makes ul{
+		width:33%;
+	}
+	
+	.options .options__block{
+		overflow:hidden;
+	}
+	
+	.options .options__item{
+		float:left;
+	}
+	
+	.reviews_container_col_right.options .options__item select{
+		display:inline;
+	}
+
+        
+	.model__block{
+		width:30%;
+		margin-right:2%;
+	}
+	
+	.most-visited tr:nth-child(2n+1){
+		background:none;
+	}
+	
+	.text_size{
+		width:80%;
+	}
+	
+	.model .model__specs-table td {
+		font-size:12px;
+	}
+	
+	.make .make__vehicle-image img{
+		float:left;
+		margin-right:10%;
+	}
+}
+@media screen and (max-width:490px){
+		.reviews .reviews__tabs li{
+		width:46%
+
+}
+}
+
+@media screen and (min-width:960px){
+	.model__block{
+		width:20%;
+		margin-right:3%;
+	}
+	
+	.breadcrumb {
+		display:block;
+	}
+	
+	.text_size{
+		width:63%;
+		float:left;
+		
+	}
+	
+	.seo-text .adsbygoogle{
+		float:left;
+		margin-right:2%;
+	}
+	
+	.f_left{float: left;width:20%;max-width:336px;margin-right:20px;}
+}
+
+@media screen and (min-width:1024px){
+	.all-makes ul{
+		display:block;
+		
+	}
+	
+	.google_links{
+		width:336px;
+	}
+	
+	.all-makes td, .all-makes ul{
+		width:16.666%;
+	}
+	
+	.reviews_container_col_right.options .options__item{
+		float:left;
+		width:50%;
+		
+	}
+}
+
+@media screen and (min-width:1200px){
+	.l .l-col1{
+		width:70%;
+		float:left;
+	}
+	
+	.l .l-col2{
+		width:28%;
+		float:right;
+	}
+	
+	.product_photo_item_top > ul{
+		display:block;
+	}
+	
+	.text_size{
+		width:53%;
+		float:left;
+	}
+
+}
