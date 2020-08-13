@@ -16,8 +16,8 @@ function str_replace_params(string $string, $params = []) {
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'id'=>'AutoFiles',
-	'name'=>'Auto',
+	'id'=>'wheeloffset',
+	'name'=>'wheeloffset',
 	
 	// preloading 'log' component
 	'preload'=>array(
