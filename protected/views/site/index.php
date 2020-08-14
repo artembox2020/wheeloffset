@@ -14,7 +14,6 @@
 
 	
 		<section class="seo-text">
-	<!-- #######  YAY, I AM THE SOURCE EDITOR! #########-->
 
 <p>When shopping for aftermarket wheels, the most common measurements that a lot of people get confused by are offset and back spacing.</p>
 <p>Our website is dedicated to helping you figure out the right wheel offset and back spacing for your vehicle and understand what they actually are. Offset is the distance from the centerline of the wheel to the back pad, a mounting surface where the wheels actually get put onto your car. Offset of the wheel is the relationship of the face of the hub to the centerline of the wheel.</p>
@@ -75,6 +74,7 @@ See <a href="https://wheeloffset.net/wheels/toyota/tacoma/">more here</a>.</p>
 <p>What is the practical use of the wheel offset and backspacing? Why do you even need to know these numbers? With a positive offset the wheel gets a flush, flatter look. With negative offset you get a dish or bold look by moving the hub to the back.</p>
 <p>Offset also has an effect on how much the wheel sticks out past your fender or goes inside the fender. The more positive offset you have the further the wheel is going to be in from the fender. The more negative offset you have the further the wheel is going to stick out. Zero offset is your center line.</p>
 <p>Back spacing is super important if you are planning to get wider wheels. Improper backspacing may cause clearance issues. So when shopping for aftermarket wheels make sure you know how much backspacing you can run. We have an extensive database of stock and aftermarket wheel offset measurements for all the vehicles. Choose your make, model and year to run the wheel offset chart for your car.</p>
+<p>The <a href="https://hubbore.com">centerbore of a wheel</a> is the machined opening in the center of the wheel that centers the wheel properly on a vehicle. It is important for a wheel to be "Hub Centric" because it will reduce the chance of vibration.</p>
 
 
 
