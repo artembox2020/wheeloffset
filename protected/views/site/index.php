@@ -36,6 +36,10 @@ See <a href="https://wheeloffset.net/wheels/toyota/tacoma/">more here</a>.</p>
 <p><a href="/photos/wheel_offset/wheel-offset-chart.gif"><img src="/photos/wheel_offset/wheel-offset-chart-small.gif"></a></p>
 
 
+
+<h2>Do Negative Offset Wheels Stick Out?</h2>
+<p>Yes!</p>
+
 <h2>How do we find the true width of the wheel?</h2>
 <p>It is important to measure the width from the bead to the bead. That is the true width of the wheel. If you have a spare set of wheel you are not going to measure from the outside to the outside.</p>
 <p>Zero offset means the face of the hub on the inside of the wheel is dead center in the wheel. If the face of the hub moves towards the front of the wheel, that stands for the positive offset. If the face of the hub moves towards the rear of the wheel or the inside, that is negative offset. For example, 40 mm of positive offset means the wheel is 40 millimeters towards the front of the wheel.</p>
