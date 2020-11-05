@@ -90,5 +90,13 @@
 <?php endif;?>
 
 
+<script type="text/javascript" src="//cdn.geni.us/snippet.min.js" defer></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+var tsid =123392;
+Genius.amazon.convertLinks(tsid, true, "https://buy.geni.us"); });
+</script>
+
+
 </body>
 </html>
