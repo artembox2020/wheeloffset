@@ -74,7 +74,7 @@
 <footer>
 		<section class="footer__copyright"><br>
 
-<br>		&copy <?=date('Y')?> 
+<br>		&copy <?=date('Y')?> <a rel="nofollow" href="/about.html">About us</a>
 
                 </section>
 </footer>
