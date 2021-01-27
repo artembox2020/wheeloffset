@@ -29,7 +29,7 @@
 <h2>How far will -12 offset stick out</h2>
 <p>
 It pretty much depends on what size you are comparing to.
-For example, let's take Toyota Tundra and the factory wheel size of 16x7.0 ET25. This means the wheels have a positive offset of 25 mm. If we mount the 8-inch rim, the out-ward offset will increase by 50 mm compared to the stock value of ET25. For the 9-inch rim, the wheel offset will be 62 mm, and the 10-inch rim will have an offset of 75 mm.
+For example, let's take Toyota Tundra and the factory <a href="https://wheelssize.com">wheel size</a> of 16x7.0 ET25. This means the wheels have a positive offset of 25 mm. If we mount the 8-inch rim, the out-ward offset will increase by 50 mm compared to the stock value of ET25. For the 9-inch rim, the wheel offset will be 62 mm, and the 10-inch rim will have an offset of 75 mm.
 </p><p>
 See <a href="https://wheeloffset.net/wheels/toyota/tacoma/">more here</a>.</p>
 <br><br>
