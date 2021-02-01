@@ -219,6 +219,8 @@ class SiteController extends Controller
 
 	public function actionPage($alias)
 	{
+        $alias = str_replace('-', '_', $alias);
+
 		$title = SiteConfig::getInstance()->getValue('static_'.$alias.'_title');
 		$this->pageTitle = $title;
 		$this->meta_keywords = SiteConfig::getInstance()->getValue('static_'.$alias.'_meta_keywords');

@@ -97,7 +97,7 @@ return array(
 			'showScriptName' => false,
 			'rules'=>array(	
 				//static page view
-				'<alias:(about|test)>.html' => 'site/page',			
+				'<alias:(about|privacy-policy)>.html' => 'site/page',
 			
 				'tires.html'=>'tires/index',
 				'tires/r<value:[0-9]{2}>.html'=>'tires/diameter',

@@ -74,7 +74,10 @@
 <footer>
 		<section class="footer__copyright"><br>
 
-<br>		&copy <?=date('Y')?> 
+<br>		&copy <?=date('Y')?>
+
+            <a rel="nofollow" href="/privacy-policy.html">Privacy policy</a>
+
 
                 </section>
 </footer>
