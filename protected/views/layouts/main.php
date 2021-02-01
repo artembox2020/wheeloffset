@@ -74,12 +74,12 @@
 <footer>
 		<section class="footer__copyright"><br>
 
-<br>		&copy <?=date('Y')?>
 
-            <a rel="nofollow" href="/privacy-policy.html">Privacy policy</a>
+<br>		&copy <?=date('Y')?> <a rel="nofollow" href="/about.html">About us</a> |
+             <a rel="nofollow" href="/privacy-policy.html">Privacy policy</a>
 
 
-                </section>
+        </section>
 </footer>
 
 
@@ -91,6 +91,14 @@
   <?=$stat[0]?> / <?=round($stat[1],5)?>
 </div> 
 <?php endif;?>
+
+
+<script type="text/javascript" src="//cdn.geni.us/snippet.min.js" defer></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+var tsid =123392;
+Genius.amazon.convertLinks(tsid, true, "https://buy.geni.us"); });
+</script>
 
 
 </body>

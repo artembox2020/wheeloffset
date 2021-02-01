@@ -1,0 +1,323 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    padding-top: 100px;
+}
+
+.main-title{
+    color: #2FA4E7;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 10px;
+    padding-left: 30px;
+}
+
+.main-title.offset-top{
+    margin-top: 100px;
+}
+
+.wrapper{
+    width: 90%;
+    min-width: 280px;
+    margin: 0 auto;
+}
+
+.culc-block{
+    background: #F5FAFE;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.culc-selects{
+    background: #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.culc-selects + .culc-selects{
+    margin-top: 15px;
+}
+
+.culc-selects__title{
+    border-radius: 3px;
+    background: #2FA4E7;
+    padding: 9px 20px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+    
+}
+
+.culc-selects__selects{
+    padding: 5px 15px 9px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.culc-selects__select{
+    width: calc(50% - 15px);
+}
+
+.culc-selects__select select{
+    width: 100%;
+    border: 1px solid #E3E3E3;
+    border-radius: 3px;
+    outline: none;
+    padding: 10px;
+    line-height: 24px;
+}
+
+.culc-selects__select input{
+    width: 100%;
+    border: 1px solid #E3E3E3;
+    border-radius: 3px;
+    outline: none;
+    padding: 4px 10px;
+    line-height: 24px;
+}
+
+.culc-selects__select .title{
+    font-size: 14px;
+    line-height: 30px;
+    color: #4D4D4D;
+}
+
+.culc-selects__select .sub{
+    font-size: 12px;
+    line-height: 20px;
+    color: #4D4D4D;
+}
+
+.culc-selects__select .sub.var2{
+    color: rgba(77, 77, 77, 0.4);
+}
+
+.btn-culc{
+    padding: 8px 31px 8px 54px;
+    background-color: #2FA4E7;
+    background-image: url(../../markups/offset-calc/img/calculator.svg);
+    background-repeat: no-repeat;
+    background-position: center left 30px;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #fff;
+    max-width: 145px;
+    margin: 25px auto 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-radius: 30px;
+    margin-bottom: 100px;
+}
+
+tr td:first-child{
+    text-align: right;
+    width: 170px;
+}
+
+td select{    
+    width: 100%;
+    border: 1px solid #E3E3E3;
+    border-radius: 3px;
+    outline: none;
+    padding: 10px;
+    line-height: 24px;
+}
+
+tr:nth-child(1){}
+
+td {
+    padding: 10px;
+    text-align: center;
+    width: 85px;
+}
+
+td.blue{
+    color: #0a64ab;
+}
+
+tr:nth-child(even){
+    background: #f5fafe;
+}
+
+.table-wide{
+    width: 100%;
+    overflow: auto;
+    margin-bottom: 100px;
+}
+
+.table-wide table{
+    margin-bottom: 0;
+}
+.table-wide tr:nth-child(1),
+.table-wide tr:nth-child(2),
+.table-wide tr td:nth-child(1){
+    color: #0a64ab;    
+}
+
+.table-wide::-webkit-scrollbar {
+    height: 20px;
+}
+
+.table-wide::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-wide::-webkit-scrollbar-thumb {
+    background: #2FA4E7;
+    border-radius: 30px;
+}
+
+.table-wide::-webkit-scrollbar-thumb:hover {
+    background: #2FA4E7;
+}
+
+@media only screen and (max-width : 575px) {
+    .wrapper{
+        width: 100%;
+    }
+    .culc-selects__selects{
+        flex-direction: column;
+    }
+    .culc-selects__select{
+        width: 100%;
+    }
+    tr td:first-child{
+        width: 100px;
+    }
+    table{
+        width: 100%;
+    }
+    td{
+        padding: 10px;
+    }
+    td select{
+        padding: 10px 5px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
