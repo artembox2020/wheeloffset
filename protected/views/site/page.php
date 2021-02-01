@@ -1,7 +1,6 @@
 <div class="l">
 	<div class="l-col1">
 		<section class="seo-text">
-			<h3><?=$title?></h3>
 			<?=$content?>
 		</section>
 	</div>
