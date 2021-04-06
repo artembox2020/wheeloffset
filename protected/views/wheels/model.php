@@ -39,9 +39,9 @@
 		<section class="table-container">
 			<img alt="<?=$make['title']?> <?=$model['title']?> bolt pattern" src="<?=AutoModelYear::thumb($wheelsDataItem['ids'][0], 150, null, 'resize')?>"><h4 class="title_tire"><?=$make['title']?> <?=$model['title']?> Wheel Offset</h4>
 			<?php foreach ($wheelsDataItem['years'] as $y):?>
-			<a name="<?=$y?>" style="color:#000;"><small><?=$y?></small></a>
+			<a name="<?=$y?>"><small><?=$y?></small></a>
 			<?php endforeach;?>
-			
+			<a rel="nofollow" href="https://www.anrdoezrs.net/links/100377875/type/dlg/https://m.tirerack.com/content/tirerack/mobile/en/tires.html">Shop for Tires</a> at Tire Rack.
 			<table>
 			<tbody>
 				
