@@ -41,7 +41,7 @@
 			<?php foreach ($wheelsDataItem['years'] as $y):?>
 			<a name="<?=$y?>" style="color:#000;"><small><?=$y?></small></a>
 			<?php endforeach;?><br>
-			<a rel="nofollow" href="https://www.anrdoezrs.net/links/100377875/type/dlg/https://m.tirerack.com/content/tirerack/mobile/en/tires.html">Shop for Tires</a> at Tire Rack.
+			<a rel="nofollow" href="https://www.anrdoezrs.net/links/100377875/type/dlg/https://www.tirerack.com/content/tirerack/desktop/en/tires.html">Shop for Tires</a> at Tire Rack.
 			<table>
 			<tbody>
 				
