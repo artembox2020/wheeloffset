@@ -26,7 +26,7 @@
 					
 					<?php if (!empty($carSpecsAndDimensions['hp']['mmin'])):?>
 					<tr>
-						<td>Horsepower</td>
+						<td><a class="horsepower" title="<?=$modelYear['year']?> <?=$make['title']?> <?=$model['title']?> horsepower, hp">Horsepower</a></td>
 						<td class="spec-value">
 						<?php if ($carSpecsAndDimensions['hp']['mmin'] != $carSpecsAndDimensions['hp']['mmax']):?>
 							<?=(float)$carSpecsAndDimensions['hp']['mmin']?> - <?=(float)$carSpecsAndDimensions['hp']['mmax']?>
@@ -38,7 +38,7 @@
 					<?php endif;?>
 					
 					<tr>
-						<td>Dimensions</a></td>
+						<td><a class="dim" title="<?=$modelYear['year']?> <?=$make['title']?> <?=$model['title']?> dimensions">Dimensions</a></td>
 						<td class="spec-value">...</td>
 					</tr>						
 					
@@ -62,7 +62,7 @@
 					
 					<tr>
 						<td>
-							<a title="Modified, custom <?=$make['title']?> <?=$model['title']?>, car tuning" class="tuning" href="/tuning/<?=$make['alias']?>/<?=$model['alias']?>/">Custom cars</a>
+							<a title="Modified, custom <?=$make['title']?> <?=$model['title']?>, car tuning" class="tuning" href="https://modified1.com/car-builds/<?=$make['alias']?>/<?=$model['alias']?>/">Custom cars</a>
 						</td>
 						<td class="spec-value">
 							<?php $countProjects = Project::getCountByModel($model['id'])?>
