@@ -26,7 +26,7 @@
 					
 					<?php if (!empty($carSpecsAndDimensions['hp']['mmin'])):?>
 					<tr>
-						<td>Horsepower</td>
+						<td><a class="horsepower" title="<?=$modelYear['year']?> <?=$make['title']?> <?=$model['title']?> horsepower, hp" href="/horsepower/<?=$make['alias']?>/<?=$model['alias']?>/<?=$modelYear['year']?>/">Horsepower</a></td>
 						<td class="spec-value">
 						<?php if ($carSpecsAndDimensions['hp']['mmin'] != $carSpecsAndDimensions['hp']['mmax']):?>
 							<?=(float)$carSpecsAndDimensions['hp']['mmin']?> - <?=(float)$carSpecsAndDimensions['hp']['mmax']?>
@@ -38,7 +38,7 @@
 					<?php endif;?>
 					
 					<tr>
-						<td>Dimensions</a></td>
+						<td><a class="dim" title="<?=$modelYear['year']?> <?=$make['title']?> <?=$model['title']?> dimensions" href="/dimensions/<?=$make['alias']?>/<?=$model['alias']?>/<?=$modelYear['year']?>/">Dimensions</a></td>
 						<td class="spec-value">...</td>
 					</tr>						
 					
@@ -53,7 +53,7 @@
 					<?php $rangeTireSize = AutoModel::getMinMaxTireSizeYear($modelYear['id']);?>
 					<?php if (!empty($rangeTireSize)):?>
 					<tr>
-						<td>Tire size</td>
+						<td><a class="tire" title="<?=$modelYear['year']?> <?=$make['title']?> <?=$model['title']?> Tire size" href="/tires/<?=$make['alias']?>/<?=$model['alias']?>/<?=$modelYear['year']?>/">Tire size</a></td>
 						<td class="spec-value">
 							<?=$rangeTireSize['min']?> ...
 						</td>
@@ -62,7 +62,7 @@
 					
 					<tr>
 						<td>
-							<a title="Modified, custom <?=$make['title']?> <?=$model['title']?>, car tuning" class="tuning" href="https://modified1.com/car-builds/<?=$make['alias']?>/<?=$model['alias']?>/">Custom cars</a>
+							<a title="Modified, custom <?=$make['title']?> <?=$model['title']?>, car tuning" class="tuning" href="/tuning/<?=$make['alias']?>/<?=$model['alias']?>/">Custom cars</a>
 						</td>
 						<td class="spec-value">
 							<?php $countProjects = Project::getCountByModel($model['id'])?>
