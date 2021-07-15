@@ -1,7 +1,7 @@
 			<?php $truncate = explode('[truncate]', $text)?>
 			<div class="js-<?=$text?>-0">
 			<?php if (isset($make) && isset($model)):?>
-				<a title="<?= $make['title']?> <?= $model['title']?> weight" href="/weight/<?= $make['alias']?>/<?= $model['alias']?>/">Car weight</a>				
+				
 			<?php endif;?>
 				<?=$truncate[0]?>
 			</div>
