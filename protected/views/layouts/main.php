@@ -74,7 +74,8 @@
 <footer>
 		<section class="footer__copyright"><br>
 
-
+<h4>Amazon Associates Program</h4>
+			<p>We are a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn fees by linking to Amazon.com and affiliated sites. <br> We may earn a commission from links that lead to the Amazon site.</p>
 <br>		&copy <?=date('Y')?> <a rel="nofollow" href="/about.html">About us</a> |
              <a rel="nofollow" href="/privacy-policy.html">Privacy policy</a>
 
