@@ -61,7 +61,7 @@
 				
 				<?php if (!empty($wheelsDataItem['bolt_pattern'])):?>
 				<tr>
-					<td><a href="https://wheelssize.com/bolt-pattern/<?=$make['title']?>/<?=$model['alias']?>/"><?=$model['title']?> Bolt Pattern</td>
+					<td><a href="https://wheelssize.com/bolt-pattern/<?=$make['alias']?>/<?=$model['alias']?>/"><?=$model['title']?> Bolt Pattern</td>
 					<td>PCD <?=$wheelsDataItem['bolt_pattern']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=wheel%20adapters&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>See Adapters</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
 					
 				</tr>
