@@ -24,17 +24,10 @@
 
 </head>
 <body class="l">
-<!-- BEGIN HEADER -->
+
 <header>
 	<a href="/" class="logo" title="Cars technical information"><span>Wheel</span> Offset</a>
-	<!--<div class="search">
-		<input type="text" placeholder="Search">
-		<button type="submit" class="btn btn_search"></button>
-	</div>-->
-	<!--
-	<a href="#" class="sign-in">Sign in</a>
-	<a href="#" class="join">Join</a>
-	-->
+	
 </header>
 
 <nav>
@@ -67,7 +60,7 @@
 		</li>
 	<?php endforeach;?>
 </ul>
-
+<small>When you buy through links on our site, we may earn an affiliate commission.</small>
 <?php echo $content;?>
 
 <!-- BEGIN FOOTER -->
