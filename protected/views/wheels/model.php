@@ -55,14 +55,14 @@
 				<?php if (!empty($stockWheelOffset)):?>
 				<tr>
 					<td>Stock wheel offset</td>
-					<td><?=implode(' to ', $stockWheelOffset)?> mm<br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=wheel%20spacers&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>Try Wheel Spacers</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
+					<td><?=implode(' to ', $stockWheelOffset)?> mm<br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=wheel%20spacers&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>Try Wheel Spacers</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
 				</tr>
 				<?php endif;?>
 				
 				<?php if (!empty($wheelsDataItem['bolt_pattern'])):?>
 				<tr>
 					<td><?=$model['title']?> Bolt Pattern</td>
-					<td>PCD <?=$wheelsDataItem['bolt_pattern']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=wheel%20adapters&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>See Adapters</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
+					<td>PCD <?=$wheelsDataItem['bolt_pattern']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=wheel%20adapters&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>See Adapters</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
 					
 				</tr>
 				<?php endif;?>
@@ -103,26 +103,26 @@
 				<tr>
 					<td>Center bore (hub bore)
 </td>
-					<td><?=$wheelsDataItem['center_bore']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=Hub%20Centric%20Rings&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>Use Hub Centric Rings</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
+					<td><?=$wheelsDataItem['center_bore']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=Hub%20Centric%20Rings&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>Use Hub Centric Rings</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>
 				</tr>
 				<?php endif;?>	
 				
 				<?php if (!empty($wheelsDataItem['thread_size'])):?>
 				<tr>
 					<td>Thread Diameter</td>
-					<td><?=$wheelsDataItem['thread_size']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=Lug%20Nuts&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>Lug Nuts</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>					
+					<td><?=$wheelsDataItem['thread_size']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=Lug%20Nuts&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>Lug Nuts</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>					
 				</tr>
 				<?php endif;?>				
 				
 				<tr>
 					<td>Stock Rim Sizes Range</td>
-					<td><?=$wheelsDataItem['tire_rim_diameter_from']?>x<?=$wheelsDataItem['rim_width_from']?> &ndash; <?=$wheelsDataItem['tire_rim_diameter_to']?>x<?=$wheelsDataItem['rim_width_to']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=hubcaps&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>Hubcaps</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>					
+					<td><?=$wheelsDataItem['tire_rim_diameter_from']?>x<?=$wheelsDataItem['rim_width_from']?> &ndash; <?=$wheelsDataItem['tire_rim_diameter_to']?>x<?=$wheelsDataItem['rim_width_to']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=hubcaps&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>Hubcaps</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td>					
 				</tr>
 				
 				<?php if (!empty($wheelsDataItem['custom_rim_sizes_range'])):?>
 				<tr>
 					<td>Custom rim sizes range</td>
-					<td><?=$wheelsDataItem['custom_rim_sizes_range']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=aftermarket%20wheels&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><b>Custom Wheels</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td></tr>
+					<td><?=$wheelsDataItem['custom_rim_sizes_range']?><br> <a target="_blank" rel="nofollow" href="http://www.amazon.com/gp/search?ie=UTF8&camp=1789&creative=9325&index=automotive&keywords=aftermarket%20wheels&linkCode=ur2&tag=wheeloffset-20&linkId=SAMMREJTPRAVTXQ4"><img style="vertical-align:middle;padding-right: 5px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/16px-Amazon_icon.svg.png"><b>Custom Wheels</b></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=wheeloffset-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></td></tr>
 				<?php endif;?>	
 					
 				<?php $rangeTire = array();
