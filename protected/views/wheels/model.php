@@ -1,7 +1,7 @@
 <main>
 	<div class="l-col1">
 		<section class="years_box make">
-			<h1 class="section-name_2"><?=$make['title']?> <?=$model['title']?> Wheel Offset Chart</h1>
+			<h1 class="section-name_2"><?=$make['title']?> <?=$model['title']?> Wheel Offset Chart <?=$model['alias']?></h1>
 			<ul class="years_list">
 			<?php foreach ($wheelsDataItems as $wheelsDataItem):?>
 				<?php foreach ($wheelsDataItem['years'] as $y):?>
