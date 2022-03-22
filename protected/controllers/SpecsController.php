@@ -11,6 +11,8 @@ class SpecsController extends Controller
 	
 	public function action060times()
 	{
+	    $this->redirect('https://zero60times.com/', false, 301);
+
 		$this->pageTitle = SiteConfig::getInstance()->getValue('seo_0_60_times_title');
 		$this->meta_keywords = SiteConfig::getInstance()->getValue('seo_0_60_times_meta_keywords');
 		$this->meta_description = SiteConfig::getInstance()->getValue('seo_0_60_times_meta_description');	
@@ -36,8 +38,10 @@ class SpecsController extends Controller
 		
 		if (empty($make)) {
 			 throw new CHttpException(404,'Page cannot be found.');
-		}	
-	
+		}
+
+        $this->redirect('https://zero60times.com/0-60-times/' . $make['alias'] . '/', false, 301);
+
 		$this->pageTitle = str_replace('[make]', $make['title'], SiteConfig::getInstance()->getValue('seo_0_60_times_make_title'));
 		$this->meta_keywords = str_replace('[make]', $make['title'], SiteConfig::getInstance()->getValue('seo_0_60_times_make_meta_keywords'));
 		$this->meta_description = str_replace('[make]', $make['title'], SiteConfig::getInstance()->getValue('seo_0_60_times_make_meta_description'));		
@@ -72,7 +76,9 @@ class SpecsController extends Controller
 		if (empty($model)) {
 			 throw new CHttpException(404,'Page cannot be found.');
 		}
-		
+
+        $this->redirect('https://zero60times.com/0-60-times/' . $make['alias'] . '/' . $model['alias'] . '/', false, 301);
+
 		$this->pageTitle = str_replace(array('[make]', '[model]'), array($make['title'], $model['title']), SiteConfig::getInstance()->getValue('seo_0_60_times_model_title'));
 		$this->meta_keywords = str_replace(array('[make]', '[model]'), array($make['title'], $model['title']), SiteConfig::getInstance()->getValue('seo_0_60_times_model_meta_keywords'));
 		$this->meta_description = str_replace(array('[make]', '[model]'), array($make['title'], $model['title']), SiteConfig::getInstance()->getValue('seo_0_60_times_model_meta_description'));		
