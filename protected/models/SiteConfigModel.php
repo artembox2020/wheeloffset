@@ -18,7 +18,7 @@ class SiteConfigModel extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'settings';
+		return 'settings_wheeloffset';
 	}
 
 	/**
