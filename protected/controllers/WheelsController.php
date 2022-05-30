@@ -94,7 +94,7 @@ class WheelsController extends Controller
 		$make = AutoMake::getMakeByAlias($makeAlias);
 		if (empty($make)) {
 			 throw new CHttpException(404,'Page cannot be found.');
-		}	
+		}
 	
 		$model = AutoModel::getModelByMakeAndAlias($make['id'], $modelAlias);
 
@@ -113,7 +113,7 @@ class WheelsController extends Controller
 			'/wheels'.$make['url'] => $make['title'] . ' wheels',
 			'#' => $model['title'],
 		);
-			
+
 		$modelByYears = AutoModel::getYears($model['id']);
 		$lastModelYear = AutoModel::getLastYear($model['id']);
 				
@@ -137,9 +137,44 @@ class WheelsController extends Controller
 	
 	public function actionModelYear($makeAlias, $modelAlias, $year)
 	{
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: /wheels/{$makeAlias}/{$modelAlias}/");
-        exit();	
+        $make = AutoMake::getMakeByAlias($makeAlias);
+        if (empty($make)) {
+            throw new CHttpException(404,'Page cannot be found.');
+        }
+
+        $model = AutoModel::getModelByMakeAndAlias($make['id'], $modelAlias);
+
+        if (empty($model)) {
+            throw new CHttpException(404,'Page cannot be found.');
+        }
+
+        $this->pageTitle = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $year), SiteConfig::getInstance()->getValue('seo_wheels_model_year_title'));
+        $this->meta_keywords = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $year), SiteConfig::getInstance()->getValue('seo_wheels_model_year_meta_keywords'));
+        $this->meta_description = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $year), SiteConfig::getInstance()->getValue('seo_wheels_model_year_meta_description'));
+        $header_text_block = str_replace(array('[make]', '[model]', '[year]'), array($make['title'], $model['title'], $year), SiteConfig::getInstance()->getValue('wheels_model_year_header_text_block'));
+
+        $this->breadcrumbs = array(
+            '/' => 'Home',
+            '/wheels.html' => 'Wheels',
+            '/wheels'.$make['url'] => $make['title'] . ' wheels',
+            '/wheels'. $make['url'] . strtolower($model['title']) => $model['title'],
+            '#' => $year,
+        );
+
+        $wheelsDataItems = AutoModel::getWheelsDataFull($model['id'], $year);
+        foreach ($wheelsDataItems as $k => $v) {
+            $wheelsDataItems[$k]['custom_rim_sizes_range'] = Project::getCustomRimSizesRangeByModelYears($v['ids']);
+            $wheelsDataItems[$k]['tires_range_from'] = AutoModelYear::getTireRangeByModelYears($v['ids'], 'ASC');
+            $wheelsDataItems[$k]['tires_range_to'] = AutoModelYear::getTireRangeByModelYears($v['ids'], 'DESC');
+            $wheelsDataItems[$k]['custom_rim_sizes'] = Project::getCustomRimSizes($v['ids']);
+        }
+
+        echo $this->render('model_year', array(
+            'make' => $make,
+            'model' => $model,
+            'header_text_block' => $header_text_block,
+            'wheelsDataItems' => $wheelsDataItems,
+            ));
     }
 	
 	public function actionDiametrWidth($diametr, $width)

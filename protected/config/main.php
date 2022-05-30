@@ -122,7 +122,7 @@ return array(
 				'wheels/<diametr:[0-9]{1,3}>x<width:([0-9]{1,2}.[0-9]{1,2})>' => 'wheels/diametrWidth',
 				'wheels/<alias:[a-z0-9-_]{1,255}>' => 'wheels/make',
 				'wheels/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>' => 'wheels/model',
-				'wheels/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>/<year:[0-9]{4}>' => 'wheels/modelYear',
+				'wheels/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>/<year:[0-9]{4}>/' => 'wheels/modelYear',
 			
 				'dimensions.html'=>'dimensions/index',
 				'dimensions/<alias:[a-z0-9-_]{1,255}>' => 'dimensions/make',

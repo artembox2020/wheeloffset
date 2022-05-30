@@ -852,10 +852,11 @@ class AutoModel extends CActiveRecord
         return $data;
     }
 
-    public static function getWheelsData($model_id)
+    public static function getWheelsData($model_id, $year = false)
     {
         $model_id = (int) $model_id;
-        $key = Tags::TAG_MODEL_YEAR . '__getWheelsData__' . $model_id;
+        $yearCondition = $year != false ? "AND y.year=$year" : "";
+        $key = Tags::TAG_MODEL_YEAR . '__getWheelsData__' . $model_id . ($year == false ? '' : $year);
         $data = Yii::app()->cache->get($key);
         if ($data === false || true) {
             $data = array();
@@ -903,7 +904,7 @@ class AutoModel extends CActiveRecord
 							WHERE FIND_IN_SET(pp.model_year_id, CAST( GROUP_CONCAT(DISTINCT y.id ORDER BY y.id DESC) AS CHAR(10000) CHARACTER SET utf8)) AND pp.rear_rim_offset_range_id <> 0 AND pp.is_staggered_wheels=1
 						) AS p_rear_ror_max					
 					FROM auto_model_year AS y
-					WHERE y.model_id={$model_id} AND y.is_active=1 AND y.is_deleted=0
+					WHERE y.model_id={$model_id} {$yearCondition} AND y.is_active=1 AND y.is_deleted=0
 					GROUP BY 	y.tire_rim_diameter_from_id, 
 								y.rim_width_from_id, 
 								y.tire_rim_diameter_to_id, 
@@ -924,10 +925,10 @@ class AutoModel extends CActiveRecord
         return $data;
     }
 
-    public static function getWheelsDataFull($model_id)
+    public static function getWheelsDataFull($model_id, $year = false)
     {
         $model_id = (int) $model_id;
-        $items = self::getWheelsData($model_id);
+        $items = self::getWheelsData($model_id, $year);
         $data = array();
 
         $listRimDiameter = TireRimDiameter::getList();
