@@ -855,6 +855,7 @@ class AutoModel extends CActiveRecord
     public static function getWheelsData($model_id, $year = false)
     {
         $model_id = (int) $model_id;
+        $year = (int) $year;
         $yearCondition = $year != false ? "AND y.year=$year" : "";
         $key = Tags::TAG_MODEL_YEAR . '__getWheelsData__' . $model_id . ($year == false ? '' : $year);
         $data = Yii::app()->cache->get($key);
