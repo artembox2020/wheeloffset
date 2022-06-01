@@ -408,7 +408,60 @@ class AutoMake extends CActiveRecord
 		}	
 		
 		return $data;
-	}	
+	}
+
+    public static function getLugnutsData($make_id)
+    {
+        $make_id = (int)$make_id;
+        $key = Tags::TAG_MODEL . '_getLugnutsData_' . $make_id;
+        $data = Yii::app()->cache->get($key);
+        if ($data === false) {
+            $data = array();
+            $sql = "SELECT
+                        y.year,
+                        y.model_id,
+						CAST( GROUP_CONCAT(DISTINCT y.thread_size_id ORDER BY y.thread_size_id DESC) AS CHAR(10000) CHARACTER SET utf8) AS `thread_size_ids`,
+						CAST( GROUP_CONCAT(DISTINCT y.center_bore_id ORDER BY y.center_bore_id DESC) AS CHAR(10000) CHARACTER SET utf8) AS `center_bore_size_ids`
+					FROM auto_model_year AS y
+					LEFT JOIN auto_model AS m ON y.model_id = m.id
+					WHERE m.make_id={$make_id} AND y.is_active=1 AND y.is_deleted=0
+					GROUP BY
+					    y.model_id,
+					    y.year
+			";
+            $items = Yii::app()->db->createCommand($sql)->queryAll();
+            $data = [];
+            $listCenterBore = RimCenterBore::getAll();
+            $listThreadSize = RimThreadSize::getAll();
+
+            foreach ($items as $item) {
+                if (!array_key_exists($item['model_id'], $data)) {
+                    $data[$item['model_id']] = [
+                        'thread_sizes' => [],
+                        'center_bore_sizes' => [],
+                    ];
+                }
+                $threadSizeIds = explode(",", $item['thread_size_ids']);
+                $centerBoreSizeIds = explode(",", $item['center_bore_size_ids']);
+
+                foreach ($threadSizeIds as $sizeId) {
+                    if (!empty($listThreadSize[$sizeId]) && !in_array($listThreadSize[$sizeId], $data[$item['model_id']]['thread_sizes'])) {
+                        $data[$item['model_id']]['thread_sizes'][] = $listThreadSize[$sizeId];
+                    }
+                }
+
+                foreach ($centerBoreSizeIds as $sizeId) {
+                    if (!empty($listCenterBore[$sizeId]) && !in_array($listCenterBore[$sizeId], $data[$item['model_id']]['center_bore_sizes'])) {
+                        $data[$item['model_id']]['center_bore_sizes'][] = $listCenterBore[$sizeId];
+                    }
+                }
+            }
+
+            Yii::app()->cache->set($key, $data, 0, new Tags(Tags::TAG_MODEL, Tags::TAG_MODEL_YEAR));
+        }
+
+        return $data;
+    }
 
 	public static function getWheelsData($make_id)
 	{

@@ -115,8 +115,13 @@ return array(
 				//'api/bulbs/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>/<year:[0-9]{4}>' => 'bulb/apiModelYear',
 				'api/bulbs/<makeAlias:[a-z0-9-_]{1,255}>' => 'bulb/apiMake',
 				'api/bulbs/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>' => 'bulb/apiModel',
-                
-				'wheels.html'=>'wheels/index',
+
+                'lugnuts.html'=>'lugnuts/index',
+                'lugnuts/<alias:[a-z0-9-_]{1,255}>' => 'lugnuts/make',
+                'lugnuts/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>' => 'lugnuts/model',
+                'lugnuts/<makeAlias:[a-z0-9-_]{1,255}>/<modelAlias:[a-z-0-9_]{1,255}>/<year:[0-9]{4}>' => 'lugnuts/modelYear',
+
+                'wheels.html'=>'wheels/index',
 				'wheels/bolt-pattern.html'=>'wheels/boltPattern',
 				'wheels/<diametr:[0-9]{1,3}>x<width:([0-9]{1,2}.[0-9]{1,2})>/<vehicle_class:[A-Z]{1}>-<section_width:[0-9]{3}>-<aspect_ratio:[0-9]{2,3}>r<rim_diameter:[0-9]{2}>' => 'wheels/diametrWidthTire',
 				'wheels/<diametr:[0-9]{1,3}>x<width:([0-9]{1,2}.[0-9]{1,2})>' => 'wheels/diametrWidth',

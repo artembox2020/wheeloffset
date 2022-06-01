@@ -5,7 +5,7 @@
 			<ul class="years_list">
 			<?php foreach ($wheelsDataItems as $wheelsDataItem):?>
 				<?php foreach ($wheelsDataItem['years'] as $y):?>
-					<li class="years_list_item"><a href="<?= "/wheels/" . strtolower($make['title']) . "/" . strtolower($model['title']) . "/$y/" ?>" class="btn years_list_link"><?=$y?></a></li>
+					<li class="years_list_item"><a href="<?= "/wheels" . $model['url'] . "$y/" ?>" class="btn years_list_link"><?=$y?></a></li>
 				<?php endforeach;?>
 			<?php endforeach;?>
 			</ul>

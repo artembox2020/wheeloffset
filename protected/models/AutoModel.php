@@ -959,6 +959,51 @@ class AutoModel extends CActiveRecord
         return $data;
     }
 
+    public static function getWheelFasteners($model_id, $year)
+    {
+        $model_id = (integer) $model_id;
+        $year = (integer) $year;
+        $sql = "SELECT
+                    value
+                FROM wheel_fasteners AS wf
+                LEFT JOIN zdonor_wheel_size_trim AS zwst ON wf.id = zwst.wheel_fasteners_id
+                LEFT JOIN zdonor_wheel_size_model_year AS zwsmy ON zwst.model_year_id = zwsmy.id
+                LEFT JOIN auto_model_year AS amy ON zwsmy.self_id = amy.id
+                WHERE amy.year = {$year} AND amy.model_id = {$model_id} AND amy.is_active=1 AND amy.is_deleted=0
+        ";
+        $queryData = Yii::app()->db->createCommand($sql)->queryAll();
+        $data = [];
+        foreach ($queryData as $item) {
+            if (!in_array($item['value'], $data)) {
+                $data[] = $item['value'];
+            }
+        }
+
+        return $data;
+    }
+
+    public static function getWheelTighteings($model_id, $year)
+    {
+        $model_id = (integer) $model_id;
+        $year = (integer) $year;
+        $sql = "SELECT value
+                FROM wheel_tighteing AS wt
+                LEFT JOIN zdonor_wheel_size_trim AS zwst ON wt.id = zwst.wheel_tighteing_id
+                LEFT JOIN zdonor_wheel_size_model_year AS zwsmy ON zwst.model_year_id = zwsmy.id
+                LEFT JOIN auto_model_year AS amy ON zwsmy.self_id = amy.id
+                WHERE amy.year = {$year} AND amy.model_id = {$model_id} AND amy.is_active=1 AND amy.is_deleted=0
+        ";
+        $queryData = Yii::app()->db->createCommand($sql)->queryAll();
+        $data = [];
+        foreach ($queryData as $item) {
+            if (!in_array($item['value'], $data)) {
+                $data[] = $item['value'];
+            }
+        }
+
+        return $data;
+    }
+
     public static function getTireRange($tireIds, $dir)
     {
         $sql = "SELECT 
